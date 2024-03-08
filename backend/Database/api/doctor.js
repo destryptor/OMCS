@@ -2,6 +2,18 @@ const express = require('express');
 const router = express.Router();
 const Doctor = require('../Models/Doctor');
 
+router.post('/loginDoctor', async (req, res) => {
+	try {
+		const { email, password } = req.body;
+		const doctor = await Doctor.findOne({ email: email, password: password });
+		if (!doctor) return res.status(404).send('Incorrect email/ password');
+		res.json(doctor);
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ message: 'Internal server error' });
+	}
+});
+
 router.post('/getDoctorsByIds', async (req, res) => {
 	try {
 		const { ids } = req.body;
@@ -34,10 +46,27 @@ router.post('/getByLocation', async (req, res) => {
 	}
 });
 
-router.post('/upsertDoctor', async (req, res) => {
+router.post('/createDoctor', async (req, res) => {
 	try {
 		const doctorData = req.body;
-		const doctor = await Doctor.findOneAndUpdate({ _id: doctorData._id }, doctorData, { new: true, upsert: true });
+		const doctor = new Doctor(doctorData);
+		await doctor.save();
+
+		return res.status(200).json(doctor);
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ message: 'Internal server error' });
+	}
+});
+
+router.post('/updateDoctor', async (req, res) => {
+	try {
+		const doctorData = req.body;
+		const doctor = await Doctor.findOneAndUpdate({ _id: doctorData._id }, doctorData, { new: true });
+
+		if (!doctor) {
+			return res.status(404).json({ message: 'Doctor not found' });
+		}
 
 		return res.status(200).json(doctor);
 	} catch (error) {
