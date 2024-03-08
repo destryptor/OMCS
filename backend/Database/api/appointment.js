@@ -1,8 +1,9 @@
 const express = require('express');
-const router = express.Router();
+const bodyParser = require('body-parser');
+const applicationRouter = express.Router();
 const Appointment = require('../Models/Appointment');
 
-router.post('/getAppointment', async (req, res) => {
+applicationRouter.post('/getAppointment', async (req, res) => {
 	try {
 		const { id } = req.body;
 		const appointment = await Appointment.findById(id);
@@ -18,7 +19,7 @@ router.post('/getAppointment', async (req, res) => {
 	}
 });
 
-router.post('/getAppointmentsByPatient', async (req, res) => {
+applicationRouter.post('/getAppointmentsByPatient', async (req, res) => {
 	try {
 		const { patient } = req.body;
 		const appointments = await Appointment.find({ patient });
@@ -34,7 +35,7 @@ router.post('/getAppointmentsByPatient', async (req, res) => {
 	}
 });
 
-router.post('/getAppointmentsByDoctor', async (req, res) => {
+applicationRouter.post('/getAppointmentsByDoctor', async (req, res) => {
 	try {
 		const { doctor } = req.body;
 		const appointments = await Appointment.find({ doctor });
@@ -50,7 +51,7 @@ router.post('/getAppointmentsByDoctor', async (req, res) => {
 	}
 });
 
-router.post('/upsertAppointment', async (req, res) => {
+applicationRouter.post('/upsertAppointment', async (req, res) => {
 	try {
 		const appointmentData = req.body;
 		const appointment = await Appointment.findOneAndUpdate({ _id: appointmentData._id }, appointmentData, { new: true, upsert: true });
@@ -62,7 +63,7 @@ router.post('/upsertAppointment', async (req, res) => {
 	}
 });
 
-router.post('deleteAppointment', async (req, res) => {
+applicationRouter.post('/deleteAppointment', async (req, res) => {
 	try {
 		const { id } = req.body;
 		const appointment = await Appointment.findByIdAndDelete(id);
@@ -78,4 +79,4 @@ router.post('deleteAppointment', async (req, res) => {
 	}
 });
 
-module.exports = router;
+module.exports = applicationRouter;
