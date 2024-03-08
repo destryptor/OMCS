@@ -1,8 +1,21 @@
 import React from "react";
+import toast, { Toaster } from 'react-hot-toast';
+function UpdateProfile({ isDoctor = false }) {
+    // a function to check valid email
+    const checkEmail = () => {
 
-function UpdateProfile({ isDoctor = true }) {
+        const email = document.getElementById('email').value;
+       
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if( email!=="" && !emailRegex.test(email)){
+            toast.error('Invalid Email');
+            return false;
+        }
+        return true;
+    }
   return (
     <>
+    <Toaster position="top-center" reverseOrder={false} />
       {isDoctor ? (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -136,6 +149,7 @@ function UpdateProfile({ isDoctor = true }) {
                 <button
                   type="submit"
                   className="flex w-full justify-center  rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                  onClick={checkEmail}
                 >
                   Update Now
                 </button>
@@ -243,6 +257,7 @@ function UpdateProfile({ isDoctor = true }) {
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                  onClick={checkEmail}
                 >
                   Update Now
                 </button>
