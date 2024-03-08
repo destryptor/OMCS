@@ -47,6 +47,18 @@ patientRouter.post('/getByStatus', async (req, res) => {
 	}
 });
 
+patientRouter.post('/getByEmail', async (req, res) => {
+	try {
+		const { email } = req.body;
+		const patient = await Patient.findOne({ email });
+		if (!patient) return res.status(404).json({ message: 'Patient not found' });
+		res.json(patient);
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ message: 'Internal server error' });
+	}
+});
+
 patientRouter.post('/createPatient', async (req, res) => {
 	try {
 		const patientData = req.body;

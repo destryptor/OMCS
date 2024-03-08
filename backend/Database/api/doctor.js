@@ -47,6 +47,18 @@ doctorRouter.post('/getByLocation', async (req, res) => {
 	}
 });
 
+doctorRouter.post('/getByEmail', async (req, res) => {
+	try {
+		const { email } = req.body;
+		const doctor = await Doctor.findOne({ email });
+		if (!doctor) return res.status(404).json({ message: 'Doctor not found' });
+		res.json(doctor);
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ message: 'Internal server error' });
+	}
+});
+
 doctorRouter.post('/createDoctor', async (req, res) => {
 	try {
 		const doctorData = req.body;

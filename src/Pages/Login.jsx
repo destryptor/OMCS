@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Login = ({ isDoctor }) => {
@@ -82,7 +82,7 @@ const Login = ({ isDoctor }) => {
 			setMessage('Password must be at least 6 characters long');
 			return;
 		}
-		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])/;
+		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/;
 		if (!passwordRegex.test(password)) {
 			setMessage('Password must have an upper case letter, a lower case letter, a number and a special character');
 			return;
