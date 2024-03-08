@@ -167,10 +167,10 @@ function UpdateProfile({ isDoctor = false }) {
 								<div className='mt-1'>
 									<select id='countries' className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6'>
 										{doctor.location === '' ? <option selected>Choose a location</option> : <option selected>{doctor.location}</option>}
-										<option value='JP'>Jaipur</option>
-										<option value='DL'>Delhi</option>
-										<option value='BG'>Bangalore</option>
-										<option value='KGP'>Kharagpur</option>
+										<option value='Jaipur'>Jaipur</option>
+										<option value='Delhi'>Delhi</option>
+										<option value='Bangalore'>Bangalore</option>
+										<option value='Kharagpur'>Kharagpur</option>
 									</select>
 								</div>
 							</div>
@@ -229,10 +229,10 @@ function UpdateProfile({ isDoctor = false }) {
 								<div className='mt-1'>
 									<select id='countries' className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6'>
 										{patient.location === '' ? <option selected>Choose a location</option> : <option selected>{patient.location}</option>}
-										<option value='JP'>Jaipur</option>
-										<option value='DL'>Delhi</option>
-										<option value='BG'>Bangalore</option>
-										<option value='KGP'>Kharagpur</option>
+										<option value='Jaipur'>Jaipur</option>
+										<option value='Delhi'>Delhi</option>
+										<option value='Bangalore'>Bangalore</option>
+										<option value='Kharagpur'>Kharagpur</option>
 									</select>
 								</div>
 							</div>
