@@ -2,12 +2,12 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ isDoctor }) => {
 	const [isLogin, setLogin] = useState(true);
-	const [isDoctor, setDoctor] = useState(true);
 	const [message, setMessage] = useState('');
 
-	const handleLogin = async () => {
+	const handleLogin = async (event) => {
+		event.preventDefault();
 		const email = document.getElementById('email').value;
 		const password = document.getElementById('password').value;
 		const loginData = {
@@ -16,7 +16,7 @@ const Login = () => {
 		};
 		if (isDoctor) {
 			try {
-				const response = await fetch('http://localhost:3000/loginDoctor', {
+				const response = await fetch('http://localhost:6969/doctor/loginDoctor', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -26,7 +26,12 @@ const Login = () => {
 				if (response.status === 404) {
 					console.log('Incorrect email/ password');
 					setMessage('Incorrect email/ password');
+					return;
+				} else if (response.status === 500) {
+					setMessage('Internal server error');
+					return;
 				} else {
+					setMessage('');
 					const data = await response.json();
 					console.log(data);
 				}
@@ -35,16 +40,21 @@ const Login = () => {
 			}
 		} else {
 			try {
-				const response = await fetch('http://localhost:3000/loginPatient', {
+				const response = await fetch('http://localhost:6969/patient/loginPatient', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					body: loginData,
+					body: JSON.stringify(loginData),
 				});
 				if (response.status === 404) {
-					console.log('Incorrect email/ password');
+					setMessage('Incorrect email/ password');
+					return;
+				} else if (response.status === 500) {
+					setMessage('Internal server error');
+					return;
 				} else {
+					setMessage('');
 					const data = await response.json();
 					console.log(data);
 				}
@@ -54,35 +64,111 @@ const Login = () => {
 		}
 	};
 
+	const handleSignup = async (event) => {
+		event.preventDefault();
+		const email = document.getElementById('email').value;
+		const password = document.getElementById('password').value;
+
+		if (email === '' || password === '') {
+			setMessage('Please fill all the fields');
+			return;
+		}
+		const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+		if (!emailRegex.test(email)) {
+			setMessage('Invalid email');
+			return;
+		}
+		if (password.length < 6) {
+			setMessage('Password must be at least 6 characters long');
+			return;
+		}
+		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])/;
+		if (!passwordRegex.test(password)) {
+			setMessage('Password must have an upper case letter, a lower case letter, a number and a special character');
+			return;
+		}
+
+		const signupData = {
+			email: email,
+			password: password,
+		};
+
+		try {
+			if (isDoctor) {
+				const response = await fetch('http://localhost:6969/doctor/createDoctor', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(signupData),
+				});
+				if (response.status === 400) {
+					setMessage('Email already in use!');
+					return;
+				} else if (response.status === 500) {
+					setMessage('Internal server error');
+					return;
+				} else {
+					setMessage('');
+					const data = await response.json();
+					console.log(data);
+				}
+			} else {
+				const response = await fetch('http://localhost:6969/patient/createPatient', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(signupData),
+				});
+				if (response.status === 400) {
+					setMessage('Email already in use!');
+					return;
+				} else if (response.status === 500) {
+					setMessage('Internal server error');
+					return;
+				} else {
+					setMessage('');
+					const data = await response.json();
+					console.log(data);
+				}
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<>
 			{isLogin ? (
 				<div className='login'>
 					<div className='login-container'>
 						<h1>Login</h1>
-						<input id='email' type='email' placeholder='Email' />
-						<input id='password' type='password' placeholder='Password' />
-						<button onClick={handleLogin}>Login</button>
-						<p>
-							Don't have an account? <Link onClick={() => setLogin(false)}>Sign up</Link>
-						</p>
+						<form id='loginForm'>
+							<input id='email' type='email' placeholder='Email' />
+							<input id='password' type='password' placeholder='Password' />
+							<button onClick={handleLogin}>Login</button>
+						</form>
 						<span id='message' style={{ color: 'red' }}>
 							{message}
 						</span>
+						<p>
+							Don't have an account? <Link onClick={() => setLogin(false)}>Sign up</Link>
+						</p>
 					</div>
 				</div>
 			) : (
 				<div className='signup'>
 					<div className='signup-container'>
 						<h1>Sign Up</h1>
-						<input type='text' placeholder='Name' />
-						<input type='text' placeholder='Email' />
-						<input type='password' placeholder='Password' />
-						<input type='number' placeholder='Age' />
-						<input type='text' placeholder='Location' />
-						<input type='text' placeholder='Symptoms' />
-						{isDoctor ? <input type='text' placeholder='Specialization' /> : ''}
-						<button>Sign Up</button>
+						<form className='signupForm'>
+							<input id='email' type='text' placeholder='Email' />
+							<input id='password' type='password' placeholder='Password' />
+							<button onClick={handleSignup}>Sign Up</button>
+						</form>
+						<span id='message' style={{ color: 'red' }}>
+							{message}
+						</span>
 						<p>
 							Already have an account? <Link onClick={() => setLogin(true)}>Login</Link>
 						</p>
