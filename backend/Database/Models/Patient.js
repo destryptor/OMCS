@@ -2,17 +2,16 @@ const mongoose = require('mongoose');
 
 const patientSchema = new mongoose.Schema(
 	{
-		_id: mongoose.Schema.Types.ObjectId,
-		name: { type: String, required: true, default: '' },
-		email: { type: String, required: true },
-		password: { type: String, required: true },
-		age: { type: Number, required: true, default: '' },
-		location: { type: String, required: true, default: '' },
-		symptoms: { type: String, required: true, default: '' },
+		name: { type: String, default: '' },
+		email: { type: String },
+		password: { type: String },
+		age: { type: Number, default: '' },
+		location: { type: String, default: '' },
+		symptoms: { type: String, default: '' },
 		doctor: [
 			{
-				_id: mongoose.Schema.Types.ObjectId,
-				status: { type: String, required: true, default: 'Pending' },
+				_id: { type: mongoose.Schema.Types.ObjectId, required: true },
+				status: { type: String, default: 'Pending' },
 			},
 		],
 	},
