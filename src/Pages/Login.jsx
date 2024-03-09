@@ -72,36 +72,34 @@ const Login = ({ isDoctor }) => {
     }
   };
 
-  const handleSignup = async (event) => {
-    event.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+	const handleSignup = async (event) => {
+		event.preventDefault();
+		const email = document.getElementById('email').value;
+		const password = document.getElementById('password').value;
 
-    if (email === "" || password === "") {
-      toast.error("Please fill all the fields");
-      return;
-    }
-    const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
-    if (!emailRegex.test(email)) {
-      toast.error("Invalid email");
-      return;
-    }
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long");
-      return;
-    }
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/;
-    if (!passwordRegex.test(password)) {
-      toast.error(
-        "Password must have an upper case letter, a lower case letter, a number and a special character"
-      );
-      return;
-    }
+		if (email === '' || password === '') {
+			toast.error('Please fill all the fields');
+			return;
+		}
+		const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+		if (!emailRegex.test(email)) {
+			toast.error('Invalid email');
+			return;
+		}
+		if (password.length < 6) {
+			toast.error('Password must be at least 6 characters long');
+			return;
+		}
+		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/;
+		if (!passwordRegex.test(password)) {
+			toast.error('Password must have an upper case letter, a lower case letter, a number and a special character');
+			return;
+		}
 
-    const signupData = {
-      email: email,
-      password: password,
-    };
+		const signupData = {
+			email: email,
+			password: password,
+		};
 
     try {
       if (isDoctor) {
@@ -194,27 +192,16 @@ const Login = ({ isDoctor }) => {
                 </div>
               </div>
 
-              <div>
-                <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Password
-                  </label>
-                </div>
-                <div className="mt-2">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    placeholder="Password"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2 "
-                  />
-                </div>
-              </div>
+							<div>
+								<div className='flex items-center justify-between'>
+									<label htmlFor='password' className='block text-sm font-medium leading-6 text-gray-900'>
+										Password
+									</label>
+								</div>
+								<div className='mt-2'>
+									<input id='password' name='password' type='password' autoComplete='current-password' required placeholder='Password' className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2 ' />
+								</div>
+							</div>
 
               <div>
                 <button
@@ -273,27 +260,17 @@ const Login = ({ isDoctor }) => {
                 </div>
               </div>
 
-              <div>
-                <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Password
-                  </label>
-                </div>
-                <div className="mt-2">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    placeholder="Password"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2 "
-                  />
-                </div>
-              </div>
+							<div>
+								<div className='flex items-center justify-between'>
+									<label htmlFor='password' className='block text-sm font-medium leading-6 text-gray-900'>
+										Password
+									</label>
+								</div>
+								<div className='mt-2'>
+									<input id='password' name='password' type='password' autoComplete='current-password' required placeholder='Password' className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2 ' />
+								</div>
+							</div>
+
 
               <div>
                 <button
@@ -301,7 +278,7 @@ const Login = ({ isDoctor }) => {
                   className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   onClick={handleSignup}
                 >
-                  Sign in
+                  Sign up
                 </button>
               </div>
             </form>
