@@ -24,8 +24,10 @@ const Login = ({ isDoctor }) => {
 					body: JSON.stringify(loginData),
 				});
 				if (response.status === 404) {
-					console.log('Incorrect email/ password');
-					toast.error('Incorrect email/ password');
+					toast.error('No account found with this email address. Please sign up!');
+					return;
+				} else if (response.status === 400) {
+					toast.error('Incorrect password');
 					return;
 				} else if (response.status === 500) {
 					toast.error('Internal server error');
@@ -49,7 +51,10 @@ const Login = ({ isDoctor }) => {
 					body: JSON.stringify(loginData),
 				});
 				if (response.status === 404) {
-					toast.error('Incorrect email/ password');
+					toast.error('No account found with this email address. Please sign up!');
+					return;
+				} else if (response.status === 400) {
+					toast.error('Incorrect password');
 					return;
 				} else if (response.status === 500) {
 					toast.error('Internal server error');
