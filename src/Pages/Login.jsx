@@ -111,9 +111,8 @@ const Login = ({ isDoctor }) => {
 					toast.error('Internal server error');
 					return;
 				} else {
-					toast.success('Logged in successfully');
-					//navigate after 5 seconds
-					setTimeout(() => navigator('/update-profile'), 3000);
+					toast.success('Account created succesfully!');
+					setTimeout(() => navigator(`/update-profile?email=${email}&isDoctor=${isDoctor}`), 2000);
 					const data = await response.json();
 					console.log(data);
 				}
@@ -132,8 +131,8 @@ const Login = ({ isDoctor }) => {
 					toast.error('Internal server error');
 					return;
 				} else {
-					toast.success('Logged in successfully');
-					navigator('/update-profile');
+					toast.success('Account created succesfully!');
+					setTimeout(() => navigator(`/update-profile?email=${email}&isDoctor=${isDoctor}`), 2000);
 					const data = await response.json();
 					console.log(data);
 				}

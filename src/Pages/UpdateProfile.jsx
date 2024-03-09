@@ -1,12 +1,15 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-function UpdateProfile({ isDoctor }) {
+function UpdateProfile() {
 	const [doctor, setDoctor] = useState({});
 	const [patient, setPatient] = useState({});
 
-	const email = 's@g.c';
+	const location = useLocation();
+	const searchParams = new URLSearchParams(location.search);
+	const email = searchParams.get('email');
+	const isDoctor = searchParams.get('isDoctor');
 
 	useEffect(() => {
 		async function fetchData() {
