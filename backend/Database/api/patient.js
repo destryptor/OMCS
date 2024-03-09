@@ -2,12 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const patientRouter = express.Router();
 const Patient = require('../Models/Patient');
+const bcrypt = require('bcrypt');
 
 patientRouter.post('/loginPatient', async (req, res) => {
 	try {
 		const { email, password } = req.body;
-		const patient = await Patient.findOne({ email: email, password: password });
-		if (!patient) return res.status(404).send('Incorrect email/ password');
+		const patient = await Patient.findOne({ email: email });
+		if (!patient) return res.status(404).send('No account found with this email address. Please sign up!');
+		const isPasswordCorrect = await bcrypt.compare(password, patient.password);
+		if (!isPasswordCorrect) return res.status(400).send('Incorrect password');
 		res.json(patient);
 	} catch (error) {
 		console.error(error);
@@ -65,7 +68,13 @@ patientRouter.post('/createPatient', async (req, res) => {
 		const patient = await Patient.findOne({ email: patientData.email });
 		if (patient) return res.status(400).send('Email already in use!');
 
-		const newPatient = new Patient(patientData);
+		const password = patientData.password;
+		const hashedPassword = await bcrypt.hash(password, 10);
+		const newPatientData = {
+			...patientData,
+			password: hashedPassword,
+		};
+		const newPatient = new Patient(newPatientData);
 		await newPatient.save();
 
 		return res.status(200).json(newPatient);
