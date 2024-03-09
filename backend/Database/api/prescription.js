@@ -2,8 +2,29 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const prescriptionRouter = express.Router();
 const Prescription = require('../Models/Prescription');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = process.env;
 
-prescriptionRouter.post('/getPrescription', async (req, res) => {
+function authenticateToken(req, res, next) {
+	const token = req.headers['authorization'];
+
+	if (!token) {
+		return res.status(401).send('Token not provided');
+	}
+
+	const tokenParts = token.split(' ');
+	const jwtToken = tokenParts[1];
+
+	jwt.verify(jwtToken, JWT_SECRET, (err, decoded) => {
+		if (err) {
+			return res.status(403).send('Invalid token');
+		}
+		req.user = decoded;
+		next();
+	});
+}
+
+prescriptionRouter.post('/getPrescription', authenticateToken, async (req, res) => {
 	try {
 		const { id } = req.body;
 		const prescription = await Prescription.findById(id);
@@ -19,7 +40,7 @@ prescriptionRouter.post('/getPrescription', async (req, res) => {
 	}
 });
 
-prescriptionRouter.post('/getPrescriptionsByPatient', async (req, res) => {
+prescriptionRouter.post('/getPrescriptionsByPatient', authenticateToken, async (req, res) => {
 	try {
 		const { patient } = req.body;
 		const prescriptions = await Prescription.find({ patient });
@@ -35,7 +56,7 @@ prescriptionRouter.post('/getPrescriptionsByPatient', async (req, res) => {
 	}
 });
 
-prescriptionRouter.post('/getPrescriptionsByDoctor', async (req, res) => {
+prescriptionRouter.post('/getPrescriptionsByDoctor', authenticateToken, async (req, res) => {
 	try {
 		const { doctor } = req.body;
 		const prescriptions = await Prescription.find({ doctor });
@@ -51,19 +72,35 @@ prescriptionRouter.post('/getPrescriptionsByDoctor', async (req, res) => {
 	}
 });
 
-prescriptionRouter.post('/upsertPrescription', async (req, res) => {
+prescriptionRouter.post('/createPrescription', authenticateToken, async (req, res) => {
 	try {
 		const prescriptionData = req.body;
-		const prescription = await Prescription.findOneAndUpdate({ _id: prescriptionData._id }, prescriptionData, { new: true, upsert: true });
+		const newPrescription = new Prescription(prescriptionData);
+		const savedPrescription = await newPrescription.save();
 
-		return res.status(200).json(prescription);
+		return res.status(200).json(savedPrescription);
 	} catch (error) {
 		console.error(error);
 		return res.status(500).json({ message: 'Internal server error' });
 	}
 });
 
-prescriptionRouter.post('/deletePrescription', async (req, res) => {
+prescriptionRouter.post('/updatePrescription', authenticateToken, async (req, res) => {
+	try {
+		const prescriptionData = req.body;
+		const updatedPrescription = await Prescription.findByIdAndUpdate(prescriptionData._id, prescriptionData, { new: true });
+
+		if (!updatedPrescription) {
+			return res.status(404).json({ message: 'Prescription not found' });
+		}
+		return res.status(200).json(updatedPrescription);
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ message: 'Internal server error' });
+	}
+});
+
+prescriptionRouter.post('/deletePrescription', authenticateToken, async (req, res) => {
 	try {
 		const { id } = req.body;
 		const deletedPrescription = await Prescription.findByIdAndDelete(id);

@@ -6,6 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 const Login = ({ isDoctor }) => {
 	const [isLogin, setLogin] = useState(true);
 	const navigator = useNavigate();
+
 	const handleLogin = async (event) => {
 		event.preventDefault();
 		const email = document.getElementById('email').value;
@@ -34,9 +35,10 @@ const Login = ({ isDoctor }) => {
 					return;
 				} else {
 					toast.success('Logged in successfully');
-
-					const data = await response.json();
-					console.log(data);
+					const { token } = await response.json();
+					localStorage.setItem('jwtToken', token);
+					localStorage.setItem('userEmail', email);
+					setTimeout(() => navigator('/doctor-dashboard'), 2000);
 				}
 			} catch (error) {
 				console.log(error);
@@ -61,8 +63,10 @@ const Login = ({ isDoctor }) => {
 					return;
 				} else {
 					toast.success('Logged in successfully');
-					const data = await response.json();
-					console.log(data);
+					const { token } = await response.json();
+					localStorage.setItem('jwtToken', token);
+					localStorage.setItem('userEmail', email);
+					setTimeout(() => navigator('/patient-dashboard'), 2000);
 				}
 			} catch (error) {
 				toast.error('Internal server error');
@@ -117,9 +121,10 @@ const Login = ({ isDoctor }) => {
 					return;
 				} else {
 					toast.success('Account created succesfully!');
-					setTimeout(() => navigator(`/update-profile?email=${email}&isDoctor=${isDoctor}`), 2000);
 					const data = await response.json();
-					console.log(data);
+					localStorage.setItem('jwtToken', data.token);
+					localStorage.setItem('userEmail', email);
+					setTimeout(() => navigator(`/update-profile?isDoctor=${isDoctor}`), 2000);
 				}
 			} else {
 				const response = await fetch('http://localhost:6969/patient/createPatient', {
@@ -137,9 +142,10 @@ const Login = ({ isDoctor }) => {
 					return;
 				} else {
 					toast.success('Account created succesfully!');
-					setTimeout(() => navigator(`/update-profile?email=${email}&isDoctor=${isDoctor}`), 2000);
 					const data = await response.json();
-					console.log(data);
+					localStorage.setItem('jwtToken', data.token);
+					localStorage.setItem('userEmail', email);
+					setTimeout(() => navigator(`/update-profile?isDoctor=${isDoctor}`), 2000);
 				}
 			}
 		} catch (error) {
@@ -154,7 +160,7 @@ const Login = ({ isDoctor }) => {
 				<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
 					<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
 						<img className='mx-auto h-10 w-auto' src='./logo.png' alt='Your Company' />
-						<h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Login</h2>
+						<h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>{isDoctor ? 'Doctor Login' : 'Patient Login'}</h2>
 					</div>
 
 					<div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
@@ -198,7 +204,7 @@ const Login = ({ isDoctor }) => {
 				<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
 					<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
 						<img className='mx-auto h-10 w-auto' src='./logo.png' alt='Your Company' />
-						<h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>Sign Up</h2>
+						<h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>{isDoctor ? 'Doctor Sign Up' : 'Patient Sign Up'}</h2>
 					</div>
 
 					<div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm signupForm'>

@@ -1,20 +1,51 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 function UpdateProfile() {
+	const navigator = useNavigate();
 	const [doctor, setDoctor] = useState({});
 	const [patient, setPatient] = useState({});
 
 	const location = useLocation();
 	const searchParams = new URLSearchParams(location.search);
-	const email = searchParams.get('email');
-	const isDoctor = searchParams.get('isDoctor');
+	const isDoctor = searchParams.get('isDoctor') === 'true' ? true : false;
+
+	const email = localStorage.getItem('userEmail');
+
+	const authFetch = async (url, options = {}) => {
+		const token = localStorage.getItem('jwtToken');
+
+		const headers = {
+			'Content-Type': 'application/json',
+		};
+
+		if (token) {
+			headers['Authorization'] = `Bearer ${token}`;
+		}
+
+		if (options.headers) {
+			Object.assign(headers, options.headers);
+		}
+
+		return await fetch(url, {
+			...options,
+			headers: headers,
+		});
+	};
 
 	useEffect(() => {
+		const jwtToken = localStorage.getItem('jwtToken');
+		if (!jwtToken) {
+			console.log('You are not logged in. Please login to continue!');
+			toast.error('You are not logged in. Please login to continue!');
+			setTimeout(() => (isDoctor ? navigator('/doctor-login') : navigator('/patient-login')), 2000);
+		}
 		async function fetchData() {
 			if (isDoctor) {
-				const response = await fetch('http://localhost:6969/doctor/getByEmail', {
+				const response = await authFetch('http://localhost:6969/doctor/getByEmail', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -26,7 +57,7 @@ function UpdateProfile() {
 				const data = await response.json();
 				return setDoctor(data);
 			} else {
-				const response = await fetch('http://localhost:6969/patient/getByEmail', {
+				const response = await authFetch('http://localhost:6969/patient/getByEmail', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -40,7 +71,8 @@ function UpdateProfile() {
 			}
 		}
 		fetchData();
-	});
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const handleUpdate = async (event) => {
 		event.preventDefault();
@@ -64,7 +96,7 @@ function UpdateProfile() {
 					location,
 				};
 
-				const response = await fetch('http://localhost:6969/doctor/updateDoctor', {
+				const response = await authFetch('http://localhost:6969/doctor/updateDoctor', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -72,10 +104,13 @@ function UpdateProfile() {
 					body: JSON.stringify(updatedDoctor),
 				});
 
-				if (response.status === 500) alert('Internal server error');
-				if (response.status === 404) alert('Doctor not found');
-				if (response.status === 200) alert('Doctor updated successfully');
-				return;
+				if (response.status === 500) return alert('Internal server error');
+				if (response.status === 404) return alert('Doctor not found');
+				if (response.status === 200) {
+					alert('Doctor updated successfully');
+					navigator('/doctor-dashboard');
+					return;
+				}
 			} else {
 				const _id = patient._id;
 				const name = document.getElementById('name').value;
@@ -91,7 +126,7 @@ function UpdateProfile() {
 					location,
 				};
 
-				const response = await fetch('http://localhost:6969/patient/updatePatient', {
+				const response = await authFetch('http://localhost:6969/patient/updatePatient', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -99,10 +134,13 @@ function UpdateProfile() {
 					body: JSON.stringify(updatedPatient),
 				});
 
-				if (response.status === 500) alert('Internal server error');
-				if (response.status === 404) alert('Patient not found');
-				if (response.status === 200) alert('Patient updated successfully');
-				return;
+				if (response.status === 500) return alert('Internal server error');
+				if (response.status === 404) return alert('Patient not found');
+				if (response.status === 200) {
+					alert('Patient updated successfully');
+					navigator('/patient-dashboard');
+					return;
+				}
 			}
 		} catch (error) {
 			console.error(error);
@@ -111,6 +149,7 @@ function UpdateProfile() {
 
 	return (
 		<>
+			<Toaster />
 			{isDoctor ? (
 				<div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
 					<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
