@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+
 const Login = ({ isDoctor }) => {
   const [isLogin, setLogin] = useState(true);
-
+  const navigator = useNavigate();
   const handleLogin = async (event) => {
     event.preventDefault();
     const email = document.getElementById("email").value;
@@ -33,7 +34,8 @@ const Login = ({ isDoctor }) => {
           toast.error("Internal server error");
           return;
         } else {
-            toast.success('Logged in successfully');
+          toast.success("Logged in successfully");
+
           const data = await response.json();
           console.log(data);
         }
@@ -59,11 +61,12 @@ const Login = ({ isDoctor }) => {
           toast.error("Internal server error");
           return;
         } else {
-            toast.success('Logged in successfully');
+          toast.success("Logged in successfully");
           const data = await response.json();
           console.log(data);
         }
       } catch (error) {
+        toast.error("Internal server error");
         console.log(error);
       }
     }
@@ -119,7 +122,8 @@ const Login = ({ isDoctor }) => {
           toast.error("Internal server error");
           return;
         } else {
-            toast.success('Logged in successfully');
+          toast.success("Logged in successfully");
+          navigator('/update-profile')
           const data = await response.json();
           console.log(data);
         }
@@ -141,7 +145,8 @@ const Login = ({ isDoctor }) => {
           toast.error("Internal server error");
           return;
         } else {
-            toast.success('Logged in successfully');
+          toast.success("Logged in successfully");
+          navigator('/update-profile')
           const data = await response.json();
           console.log(data);
         }
@@ -153,7 +158,7 @@ const Login = ({ isDoctor }) => {
 
   return (
     <>
-        <Toaster />
+      <Toaster />
       {isLogin ? (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -168,7 +173,7 @@ const Login = ({ isDoctor }) => {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="/" method="POST" id='loginForm'>
+            <form className="space-y-6" action="/" method="POST" id="loginForm">
               <div>
                 <label
                   htmlFor="email"
@@ -217,7 +222,7 @@ const Login = ({ isDoctor }) => {
                   className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   onClick={handleLogin}
                 >
-                    Log in
+                  Log in
                 </button>
               </div>
             </form>
@@ -247,7 +252,7 @@ const Login = ({ isDoctor }) => {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm signupForm">
-            <form className="space-y-6" action="/" method="POST" >
+            <form className="space-y-6" action="/" method="POST">
               <div>
                 <label
                   htmlFor="email"
