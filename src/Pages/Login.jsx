@@ -214,7 +214,7 @@ const Login = ({ isDoctor }) => {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   onClick={handleLogin}
                 >
                     Log in
@@ -225,7 +225,7 @@ const Login = ({ isDoctor }) => {
             <p className="mt-10 text-center text-sm text-gray-500">
               Not a member?{" "}
               <Link
-                className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                className="font-semibold leading-6 text-green-600 hover:text-green-500"
                 onClick={() => setLogin(false)}
               >
                 Sign up
@@ -293,7 +293,7 @@ const Login = ({ isDoctor }) => {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   onClick={handleSignup}
                 >
                   Sign in
@@ -302,12 +302,12 @@ const Login = ({ isDoctor }) => {
             </form>
 
             <p className="mt-10 text-center text-sm text-gray-500">
-              Not a member?{" "}
+              Already a Member{" "}
               <Link
-                className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                className="font-semibold leading-6 text-green-600 hover:text-green-500"
                 onClick={() => setLogin(true)}
               >
-                Sign up
+                Log in
               </Link>
             </p>
           </div>
