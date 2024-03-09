@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 // import { Link } from 'react-router-dom';
 
-function UpdateProfile({ isDoctor = false }) {
+function UpdateProfile({ isDoctor }) {
 	const [doctor, setDoctor] = useState({});
 	const [patient, setPatient] = useState({});
 
