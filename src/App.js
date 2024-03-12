@@ -4,7 +4,8 @@ import Landing from './Pages/Landing';
 import UpdateProfile from './Pages/UpdateProfile';
 import Navbar from './Components/Navbar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import DoctorDashBoard from './Pages/DoctorDashBoard';
+import DoctorDashBoard from './Pages/DoctorDashboard';
+import PatientDashBoard from './Pages/PatientDashboard';
 
 function App() {
 	return (
@@ -17,6 +18,7 @@ function App() {
 					<Route path='/patient-login' element={<Login isDoctor={false} />} />
 					<Route path='/update-profile' element={<UpdateProfile />} />
 					<Route path='/doctor-dashboard' element={<DoctorDashBoard />} />
+					<Route path='/patient-dashboard' element={<PatientDashBoard />} />
 				</Routes>
 			</BrowserRouter>
 		</>
