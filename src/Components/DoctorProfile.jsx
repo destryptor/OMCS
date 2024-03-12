@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const DoctorProfile = () => {
 	const navigator = useNavigate();
@@ -53,6 +53,7 @@ const DoctorProfile = () => {
 			}
 		};
 		fetchDoctor();
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [email]);
 
 	const handleEdit = () => {
@@ -70,23 +71,23 @@ const DoctorProfile = () => {
 					<dl>
 						<div className='bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Name</dt>
-							<dd className='mt-1 text-sm text-gray-900 sm:col-span-2'>{doctor.name}</dd>
+							<dd className='text-sm text-gray-900 sm:col-span-2'>{doctor.name}</dd>
 						</div>
 						<div className='bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Email address</dt>
-							<dd className='mt-1 text-sm text-gray-900 sm:col-span-2'>{doctor.email}</dd>
+							<dd className='text-sm text-gray-900 sm:col-span-2'>{doctor.email}</dd>
 						</div>
 						<div className='bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Specialisation</dt>
-							<dd className='mt-1 text-sm text-gray-900 sm:col-span-2'>{doctor.specialisation}</dd>
+							<dd className='text-sm text-gray-900 sm:col-span-2'>{doctor.specialisation}</dd>
 						</div>
 						<div className='bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Certification</dt>
-							<dd className='mt-1 text-sm text-gray-900 sm:col-span-2'>{doctor.certification}</dd>
+							<dd className='text-sm text-gray-900 sm:col-span-2'>{doctor.certification}</dd>
 						</div>
 						<div className='bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Hospital/Clinic</dt>
-							<dd className='mt-1 text-sm text-gray-900 sm:col-span-2'>{doctor.clinic}</dd>
+							<dd className='text-sm text-gray-900 sm:col-span-2'>{doctor.clinic}</dd>
 						</div>
 						<div className='bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Working Hours</dt>
@@ -103,7 +104,7 @@ const DoctorProfile = () => {
 						</div>
 						<div className='bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Location</dt>
-							<dd className='mt-1 text-sm text-gray-900 sm:col-span-2'>{doctor.location}</dd>
+							<dd className='text-sm text-gray-900 sm:col-span-2'>{doctor.location}</dd>
 						</div>
 					</dl>
 				</div>

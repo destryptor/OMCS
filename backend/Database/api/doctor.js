@@ -69,7 +69,6 @@ doctorRouter.post('/getByLocation', authenticateToken, async (req, res) => {
 		if (doctors.length === 0) {
 			return res.status(404).json({ message: 'No doctors found' });
 		}
-
 		return res.status(200).json(doctors);
 	} catch (error) {
 		console.error(error);
