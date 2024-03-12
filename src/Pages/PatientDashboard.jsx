@@ -1,14 +1,14 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import DoctorProfile from '../Components/DoctorProfile';
+import PatientProfile from '../Components/PatientProfile';
 
-const DoctorDashBoard = () => {
+const PatientDashBoard = () => {
 	return (
 		<div>
-			<DoctorProfile />
+			<PatientProfile />
 		</div>
 	);
 };
 
-export default DoctorDashBoard;
+export default PatientDashBoard;
