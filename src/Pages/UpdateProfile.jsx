@@ -85,6 +85,43 @@ function UpdateProfile() {
 				const certification = document.getElementById('certification').value;
 				const clinic = document.getElementById('clinic').value;
 				const location = document.getElementById('countries').value;
+				const workingHours = [
+					{
+						day: 'Monday',
+						from: document.getElementById('monday-from').value,
+						to: document.getElementById('monday-to').value,
+					},
+					{
+						day: 'Tuesday',
+						from: document.getElementById('tuesday-from').value,
+						to: document.getElementById('tuesday-to').value,
+					},
+					{
+						day: 'Wednesday',
+						from: document.getElementById('wednesday-from').value,
+						to: document.getElementById('wednesday-to').value,
+					},
+					{
+						day: 'Thursday',
+						from: document.getElementById('thursday-from').value,
+						to: document.getElementById('thursday-to').value,
+					},
+					{
+						day: 'Friday',
+						from: document.getElementById('friday-from').value,
+						to: document.getElementById('friday-to').value,
+					},
+					{
+						day: 'Saturday',
+						from: document.getElementById('saturday-from').value,
+						to: document.getElementById('saturday-to').value,
+					},
+					{
+						day: 'Sunday',
+						from: document.getElementById('sunday-from').value,
+						to: document.getElementById('sunday-to').value,
+					},
+				];
 
 				const updatedDoctor = {
 					_id,
@@ -94,6 +131,7 @@ function UpdateProfile() {
 					certification,
 					clinic,
 					location,
+					workingHours,
 				};
 
 				const response = await authFetch('http://localhost:6969/doctor/updateDoctor', {
@@ -107,9 +145,11 @@ function UpdateProfile() {
 				if (response.status === 500) return alert('Internal server error');
 				if (response.status === 404) return alert('Doctor not found');
 				if (response.status === 200) {
-					alert('Doctor updated successfully');
-					navigator('/doctor-dashboard');
-					return;
+					toast.success('Doctor updated successfully');
+					setTimeout(() => {
+						navigator('/doctor-dashboard');
+						return;
+					}, 2000);
 				}
 			} else {
 				const _id = patient._id;
@@ -137,9 +177,11 @@ function UpdateProfile() {
 				if (response.status === 500) return alert('Internal server error');
 				if (response.status === 404) return alert('Patient not found');
 				if (response.status === 200) {
-					alert('Patient updated successfully');
-					navigator('/patient-dashboard');
-					return;
+					toast.success('Patient updated successfully');
+					setTimeout(() => {
+						navigator('/patient-dashboard');
+						return;
+					}, 2000);
 				}
 			}
 		} catch (error) {
@@ -199,7 +241,24 @@ function UpdateProfile() {
 									<input id='clinic' name='clinic' type='clinic' autoComplete='clinic' defaultValue={doctor.clinic} required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6' />
 								</div>
 							</div>
-
+							<div>
+								<div className='flex items-center justify-between'>
+									<label htmlFor='workingHours' className='block mb-2 text-sm font-medium text-gray-900'>
+										Working Hours
+									</label>
+								</div>
+								<div className='mt-1'>
+									{['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, index) => (
+										<div key={index} className='grid grid-cols-3 gap-x-4 gap-y-2'>
+											<label htmlFor={`${day.toLowerCase()}-from`} className='block text-sm font-medium leading-6 text-gray-900'>
+												{day}
+											</label>
+											<input id={`${day.toLowerCase()}-from`} name={`${day.toLowerCase()}-from`} type='text' autoComplete={`${day.toLowerCase()}-from`} required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6' placeholder='From' defaultValue={doctor.workingHours && doctor.workingHours[index] ? doctor.workingHours[index].from : ''} />
+											<input id={`${day.toLowerCase()}-to`} name={`${day.toLowerCase()}-to`} type='text' autoComplete={`${day.toLowerCase()}-to`} required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6' placeholder='To' defaultValue={doctor.workingHours && doctor.workingHours[index] ? doctor.workingHours[index].to : ''} />
+										</div>
+									))}
+								</div>
+							</div>
 							<div>
 								<div className='flex items-center justify-between'>
 									<label htmlFor='countries' className='block mb-2 text-sm font-medium text-gray-900'>
