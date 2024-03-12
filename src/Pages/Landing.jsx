@@ -18,11 +18,11 @@ const Landing = () => {
 
             <div class="max-w-lg px-4 pb-24 mx-auto text-left md:max-w-none md:text-center">
               <div class="text-center py-4">
-                <div class="backdrop-blur-sm transition duration-500 ease-in-out bg-green-600 border border-[#E2E8F0] translate-y-1 text-white  hover:text-white  text-lg font-semibold py-3 px-6 rounded-3xl inline-flex items-center m-2 hover:bg-indigo hover:scale-105 hover:shadow-xl">
+                <div class="backdrop-blur-sm transition duration-500 ease-in-out bg-green-600 border border-[#E2E8F0] translate-y-1 text-white  hover:text-white  text-lg font-semibold py-3 px-6 rounded-3xl inline-flex items-center m-2 hover:bg-indigo-600 hover:scale-105 hover:shadow-xl">
                   <Link to="/doctor-login">Log in As a Doctor</Link>
                 </div>
 
-                <div class="backdrop-blur-sm transition duration-500 ease-in-out bg-green-600 border border-[#E2E8F0] translate-y-1 text-white  hover:text-white text-lg font-semibold py-3 px-6 rounded-3xl inline-flex items-center m-2 hover:bg-indigo hover:scale-105 hover:shadow-xl">
+                <div class="backdrop-blur-sm transition duration-500 ease-in-out bg-green-600 border border-[#E2E8F0] translate-y-1 text-white  hover:text-white text-lg font-semibold py-3 px-6 rounded-3xl inline-flex items-center m-2 hover:bg-indigo-600 hover:scale-105 hover:shadow-xl">
                   <Link to="/patient-login">Log in As a Patient</Link>
                 </div>
               </div>
