@@ -7,8 +7,10 @@ import DoctorData from "../Components/DoctorData.jsx";
 const DoctorDashBoard = () => {
   return (
     <div>
-      <DoctorData />
-      <DoctorProfile />
+      <div className="flex relative">
+        <DoctorData />
+        <DoctorProfile />
+      </div>
     </div>
   );
 };

@@ -18,7 +18,7 @@ const Navbar = () => {
 
 	return (
 		<>
-			<Disclosure as='nav' className='bg-green-800'>
+			<Disclosure as='nav' className='bg-green-800 fixed w-screen z-50'>
 				<div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
 					<div className='relative flex h-16 text-center justify-center '>
 						<div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
