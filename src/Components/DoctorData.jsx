@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 function DoctorData({ email }) {
-	const [patient, setPatient] = useState({});
 	const [Data, setData] = useState([]);
 
 	const authFetch = async (url, options = {}) => {
@@ -50,14 +49,13 @@ function DoctorData({ email }) {
 				}
 
 				const patientData = await patientResponse.json();
-				setPatient(patientData);
 
 				const doctorResponse = await authFetch('http://localhost:6969/doctor/getByLocation', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify({ location: patient.location }),
+					body: JSON.stringify({ location: patientData.location }),
 				});
 
 				if (doctorResponse.status === 404) {
