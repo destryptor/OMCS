@@ -9,6 +9,13 @@ const doctorSchema = new mongoose.Schema(
 		certification: { type: String, default: '' },
 		location: { type: String, default: '' },
 		clinic: { type: String, default: '' },
+		workingHours: [
+			{
+				day: { type: String },
+				from: { type: String },
+				to: { type: String },
+			},
+		],
 		patients: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
