@@ -4,7 +4,7 @@ import Data from "./data";
 function DoctorData() {
   return (
     <>
-      <div className="flex flex-wrap max-w-screen-lg m-auto absolute top-16 left-2">
+      <div className="flex flex-wrap max-w-screen-lg m-auto absolute top-16 left-7">
         {/*Map */}
         {Data ? Data.map((data, index) => (
                     <DoctorCard key={index} name={data.name}  specialisation={data.specialisation}  clinic={data.clinic} workingHours={data.workingHours}/>
