@@ -105,7 +105,7 @@ function DoctorData({ email }) {
 	return (
 		<>
 			<Toaster />
-			<div className='flex flex-wrap flex-col max-w-screen-lg m-auto absolute top-16 left-7'>
+			<div className='flex flex-wrap max-w-screen-lg m-auto py-24 px-5'>
 				{/*Map */}
 				{Data ? Data.map((data, index) => <DoctorCard key={index} name={data.name} specialisation={data.specialisation} clinic={data.clinic} workingHours={data.workingHours} location={data.location} />) : 'No Data To Show'}
 			</div>
