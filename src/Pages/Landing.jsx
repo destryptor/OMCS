@@ -18,11 +18,11 @@ const Landing = () => {
 
             <div class="max-w-lg px-4 pb-24 mx-auto text-left md:max-w-none md:text-center">
               <div class="text-center py-4">
-                <div class="backdrop-blur-sm transition duration-500 ease-in-out bg-green-600 border border-[#E2E8F0] translate-y-1 text-white hover:bg-neutral-200 hover:text-white  text-lg font-semibold py-3 px-6 rounded-3xl inline-flex items-center m-2 hover:bg-black hover:scale-105 hover:shadow-xl">
+                <div class="backdrop-blur-sm transition duration-500 ease-in-out bg-green-600 border border-[#E2E8F0] translate-y-1 text-white  hover:text-white  text-lg font-semibold py-3 px-6 rounded-3xl inline-flex items-center m-2 hover:bg-indigo hover:scale-105 hover:shadow-xl">
                   <Link to="/doctor-login">Log in As a Doctor</Link>
                 </div>
 
-                <div class="backdrop-blur-sm transition duration-500 ease-in-out bg-green-600 border border-[#E2E8F0] translate-y-1 text-white hover:bg-neutral-200 hover:text-white text-lg font-semibold py-3 px-6 rounded-3xl inline-flex items-center m-2 hover:bg-black hover:scale-105 hover:shadow-xl">
+                <div class="backdrop-blur-sm transition duration-500 ease-in-out bg-green-600 border border-[#E2E8F0] translate-y-1 text-white  hover:text-white text-lg font-semibold py-3 px-6 rounded-3xl inline-flex items-center m-2 hover:bg-indigo hover:scale-105 hover:shadow-xl">
                   <Link to="/patient-login">Log in As a Patient</Link>
                 </div>
               </div>
@@ -49,7 +49,7 @@ const Landing = () => {
                         </div>
                       </div>
                     </div>
-                    <div class="order-first block w-full mt-12 aspect-square lg:mt-0">
+                    <div class="order-first block w-4/5 mt-12 aspect-square lg:mt-0">
                       <img
                         class="object-cover rounded-3xl object-center w-full mx-auto lg:ml-auto "
                         alt="hero"
