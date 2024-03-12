@@ -89,6 +89,19 @@ const DoctorDashBoard = () => {
 							<dd className='mt-1 text-sm text-gray-900 sm:col-span-2'>{doctor.clinic}</dd>
 						</div>
 						<div className='bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+							<dt className='text-sm font-medium text-gray-500'>Working Hours</dt>
+							<dd>
+								{doctor.workingHours &&
+									doctor.workingHours.map((day, index) =>
+										day.from === '' || day.to === '' ? null : (
+											<dd key={index} className='mt-1 text-sm text-gray-900 sm:col-span-2'>
+												{day.day} : {day.from} - {day.to}
+											</dd>
+										)
+									)}
+							</dd>
+						</div>
+						<div className='bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Location</dt>
 							<dd className='mt-1 text-sm text-gray-900 sm:col-span-2'>{doctor.location}</dd>
 						</div>
