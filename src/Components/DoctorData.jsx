@@ -5,7 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 function DoctorData({ email }) {
   const [Data, setData] = useState([]);
-
+  const [isData, setIsData] = useState(false);
   const authFetch = async (url, options = {}) => {
     const token = localStorage.getItem("jwtToken");
 
@@ -43,6 +43,7 @@ function DoctorData({ email }) {
 
         if (patientResponse.status === 404) {
           setData({});
+          setIsData(false);
           return;
         }
 
@@ -66,6 +67,7 @@ function DoctorData({ email }) {
 
         if (doctorResponse.status === 404) {
           setData({});
+          setIsData(false);
           return;
         }
 
@@ -100,21 +102,22 @@ function DoctorData({ email }) {
         });
 
         setData(doctorsData);
+        setIsData(true);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchData();
-    //eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
       <Toaster />
 
-      <div className="flex flex-wrap max-w-screen-lg m-auto py-24 px-5">
+      <div className={`flex flex-${isData ? 'wrap' : 'col'} max-w-screen-lg m-auto py-24 px-5`}>
         {/*Map */}
-        <div className="m-2  ">
+        <div className="m-2">
           <select
             id="countries"
             className="block min-w-96 rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
@@ -126,8 +129,7 @@ function DoctorData({ email }) {
             <option value="Kharagpur">Kharagpur</option>
           </select>
         </div>
-        {Data
-          ? Data.map((data, index) => (
+        {isData ? Data.map((data, index) => (
               <DoctorCard
                 key={index}
                 name={data.name}
@@ -137,7 +139,8 @@ function DoctorData({ email }) {
                 location={data.location}
               />
             ))
-          : "No Data To Show"}
+          : <div className="">No Data To Show</div> 
+          }
       </div>
     </>
   );
