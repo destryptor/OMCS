@@ -139,7 +139,7 @@ function DoctorData({ email }) {
                 location={data.location}
               />
             ))
-          : <div className="">No Data To Show</div> 
+          : <div className="min-h-screen">No Data To Show</div> 
           }
       </div>
     </>
