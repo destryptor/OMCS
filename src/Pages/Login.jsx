@@ -38,6 +38,7 @@ const Login = ({ isDoctor }) => {
 					const { token } = await response.json();
 					localStorage.setItem('jwtToken', token);
 					localStorage.setItem('userEmail', email);
+					localStorage.setItem('isDoctor', true);
 					setTimeout(() => navigator('/doctor-dashboard'), 2000);
 				}
 			} catch (error) {
@@ -66,6 +67,7 @@ const Login = ({ isDoctor }) => {
 					const { token } = await response.json();
 					localStorage.setItem('jwtToken', token);
 					localStorage.setItem('userEmail', email);
+					localStorage.setItem('isDoctor', false);
 					setTimeout(() => navigator('/patient-dashboard'), 2000);
 				}
 			} catch (error) {
@@ -124,6 +126,7 @@ const Login = ({ isDoctor }) => {
 					const data = await response.json();
 					localStorage.setItem('jwtToken', data.token);
 					localStorage.setItem('userEmail', email);
+					localStorage.setItem('isDoctor', true);
 					setTimeout(() => navigator(`/update-profile?isDoctor=${isDoctor}`), 2000);
 				}
 			} else {
@@ -145,6 +148,7 @@ const Login = ({ isDoctor }) => {
 					const data = await response.json();
 					localStorage.setItem('jwtToken', data.token);
 					localStorage.setItem('userEmail', email);
+					localStorage.setItem('isDoctor', false);
 					setTimeout(() => navigator(`/update-profile?isDoctor=${isDoctor}`), 2000);
 				}
 			}
