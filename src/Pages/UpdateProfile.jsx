@@ -18,7 +18,7 @@ function UpdateProfile() {
 	const authFetch = async (url, options = {}) => {
 		const token = localStorage.getItem('jwtToken');
 
-		const headers = {
+		const headers = { 
 			'Content-Type': 'application/json',
 		};
 
