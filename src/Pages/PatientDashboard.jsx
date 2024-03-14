@@ -21,9 +21,24 @@ const PatientDashBoard = () => {
   return (
     <>
       <Toaster />
-      <div className="flex relative">
-        <DoctorData email={email} />
-        <div className="hidden md:block">
+      <div className="flex relative ">
+        {/*Map */}
+        <div className="flex flex-col">
+          <div className="pt-24 m-auto pb-16">
+            <select
+              id="countries"
+              className="block min-w-96 rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
+            >
+              <option selected>Choose a location</option>
+              <option value="Jaipur">Jaipur</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Bangalore">Bangalore</option>
+              <option value="Kharagpur">Kharagpur</option>
+            </select>
+          </div>
+          <DoctorData email={email} />
+        </div>
+        <div className="hidden md:block fixed right-0 top-16">
           <PatientProfile />
         </div>
       </div>

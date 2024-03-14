@@ -115,20 +115,7 @@ function DoctorData({ email }) {
     <>
       <Toaster />
 
-      <div className={`flex flex-${isData ? 'wrap' : 'col'} max-w-screen-lg m-auto py-24 px-5`}>
-        {/*Map */}
-        <div className="m-2">
-          <select
-            id="countries"
-            className="block min-w-96 rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6"
-          >
-            <option selected>Choose a location</option>
-            <option value="Jaipur">Jaipur</option>
-            <option value="Delhi">Delhi</option>
-            <option value="Bangalore">Bangalore</option>
-            <option value="Kharagpur">Kharagpur</option>
-          </select>
-        </div>
+      <div className={`flex flex-${isData ? 'wrap' : 'col'} max-w-screen-lg m-auto  px-5`}>
         {isData ? Data.map((data, index) => (
               <DoctorCard
                 key={index}
