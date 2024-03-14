@@ -21,9 +21,9 @@ const PatientDashBoard = () => {
   return (
     <>
       <Toaster />
-      <div className="flex relative ">
+      <div className="flex relative">
         {/*Map */}
-        <div className="flex flex-col">
+        <div className="flex flex-col justify-center md:w-[calc(100%-24rem)]" >
           <div className="pt-24 m-auto pb-16">
             <select
               id="countries"
