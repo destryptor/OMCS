@@ -22,7 +22,7 @@ const Landing = () => {
 		<>
 			<div>
 				<section>
-					<section class='sticky '>
+					<section class='sticky py-24'>
 						<div class='max-w-lg px-4 sm:pt-24 pt-12 sm:pb-8 mx-auto text-left md:max-w-none md:text-center'>
 							<h1 class='font-extrabold  tracking-tight text-left text-[#201515] text-center sm:leading-none text-6xl sm:text-9xl'>
 								<span class='inline md:block '>Online Medical </span>
@@ -58,7 +58,7 @@ const Landing = () => {
 												</div>
 											</div>
 										</div>
-										<div class='order-first block w-4/5 mt-12 aspect-square lg:mt-0'>
+										<div class='m-auto order-first block w-4/5 mt-12 aspect-square lg:mt-0'>
 											<img class='object-cover rounded-3xl object-center w-full mx-auto lg:ml-auto ' alt='hero' src='./logo.png' />
 										</div>
 									</div>
