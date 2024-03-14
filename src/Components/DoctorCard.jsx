@@ -58,7 +58,7 @@ export default function DoctorCard(props) {
                         type="text"
                         value={inputValue}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        className="min-h-80 w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         placeholder="Kya pareshaani hai bhai tereko"
                       />
                     </div>
