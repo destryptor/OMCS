@@ -73,15 +73,15 @@ const DoctorProfile = () => {
 							<dt className='text-sm font-medium text-gray-500'>Name</dt>
 							<dd className='text-sm text-gray-900 sm:col-span-2'>{doctor.name}</dd>
 						</div>
-						<div className='bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+						<div className='bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Email address</dt>
 							<dd className='text-sm text-gray-900 sm:col-span-2'>{doctor.email}</dd>
 						</div>
-						<div className='bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+						<div className='bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Specialisation</dt>
 							<dd className='text-sm text-gray-900 sm:col-span-2'>{doctor.specialisation}</dd>
 						</div>
-						<div className='bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+						<div className='bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Certification</dt>
 							<dd className='text-sm text-gray-900 sm:col-span-2'>{doctor.certification}</dd>
 						</div>
@@ -89,7 +89,7 @@ const DoctorProfile = () => {
 							<dt className='text-sm font-medium text-gray-500'>Hospital/Clinic</dt>
 							<dd className='text-sm text-gray-900 sm:col-span-2'>{doctor.clinic}</dd>
 						</div>
-						<div className='bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+						<div className='bg-gray-50-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Working Hours</dt>
 							<dd>
 								{doctor.workingHours &&

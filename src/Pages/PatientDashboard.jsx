@@ -77,12 +77,12 @@ const PatientDashBoard = () => {
 		<>
 			<Toaster />
 			{isLoading ? ( // Render loading state
-				<div>Loading...</div>
+				<div class="m-auto font-bold text-96">Loading...</div>
 			) : (
 				<div className='flex relative'>
 					{/*Map */}
 					<div className='flex flex-col justify-center md:w-[calc(100%-24rem)]'>
-						<div className='pt-24 m-auto pb-16'>
+						<div className='pt-24 m-auto pb-1'>
 							<select id='countries' className='block min-w-96 rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6' onChange={handleLocationChange}>
 								<option selected>Choose a location</option>
 								<option value='Jaipur'>Jaipur</option>
@@ -92,7 +92,7 @@ const PatientDashBoard = () => {
 							</select>
 						</div>
 						{/* Needs styling... */}
-						<h2>List of available doctors</h2>
+						<h2 class="m-auto font-bold my-2">List of available doctors</h2>
 						<DoctorData location={location} />
 					</div>
 					<div className='hidden md:block fixed right-0 top-16'>
