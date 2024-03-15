@@ -1,5 +1,5 @@
 import React from 'react';
-import DoctorProfile from '../Components/DoctorProfile';
+import DoctorProfile from '../Components/Doctor/DoctorProfile';
 
 const DoctorDashBoard = () => {
 	
