@@ -6,8 +6,20 @@ import toast, { Toaster } from 'react-hot-toast';
 function DoctorData({ location }) {
 	const [Data, setData] = useState([]);
 	const [isData, setIsData] = useState(false);
+
+	function getJwtToken() {
+		const cookies = document.cookie.split(';').map((cookie) => cookie.trim());
+		for (const cookie of cookies) {
+			const [name, value] = cookie.split('=');
+			if (name === 'jwtToken') {
+				return value;
+			}
+		}
+		return null;
+	}
+
 	const authFetch = async (url, options = {}) => {
-		const token = localStorage.getItem('jwtToken');
+		const token = getJwtToken();
 
 		const headers = {
 			'Content-Type': 'application/json',
@@ -81,6 +93,7 @@ function DoctorData({ location }) {
 		};
 
 		fetchData();
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location]);
 	return (
 		<>

@@ -5,7 +5,17 @@ import { useEffect } from 'react';
 
 const Landing = () => {
 	const navigator = useNavigate();
-	const jwtToken = localStorage.getItem('jwtToken');
+	function getJwtToken() {
+		const cookies = document.cookie.split(';').map((cookie) => cookie.trim());
+		for (const cookie of cookies) {
+			const [name, value] = cookie.split('=');
+			if (name === 'jwtToken') {
+				return value;
+			}
+		}
+		return null;
+	}
+	const jwtToken = getJwtToken();
 	const isDoctor = localStorage.getItem('isDoctor');
 
 	useEffect(() => {

@@ -115,7 +115,7 @@ patientRouter.post('/createPatient', async (req, res) => {
 patientRouter.post('/updatePatient', authenticateToken, async (req, res) => {
 	try {
 		const patientData = req.body;
-		const patient = await Patient.findOneAndUpdate({ _id: patientData._id }, patientData, { new: true });
+		const patient = await Patient.findOneAndUpdate({ email: patientData.email }, patientData, { new: true });
 
 		if (!patient) {
 			return res.status(404).json({ message: 'Patient not found' });

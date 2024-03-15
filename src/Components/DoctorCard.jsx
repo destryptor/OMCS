@@ -7,8 +7,19 @@ export default function DoctorCard(props) {
 	const [showModal, setShowModal] = useState(false);
 	const [inputValue, setInputValue] = useState('');
 
+	function getJwtToken() {
+		const cookies = document.cookie.split(';').map((cookie) => cookie.trim());
+		for (const cookie of cookies) {
+			const [name, value] = cookie.split('=');
+			if (name === 'jwtToken') {
+				return value;
+			}
+		}
+		return null;
+	}
+
 	const authFetch = async (url, options = {}) => {
-		const token = localStorage.getItem('jwtToken');
+		const token = getJwtToken();
 
 		const headers = {
 			'Content-Type': 'application/json',
@@ -45,23 +56,36 @@ export default function DoctorCard(props) {
 		const patientEmail = localStorage.getItem('userEmail');
 		const symptoms = inputValue;
 		try {
-			const presResponse = await authFetch('http://localhost:6969/prescription/createPrescription', {
+			const patientDataToUpdate = {
+				email: patientEmail,
+				$push: {
+					doctor: {
+						email: doctorEmail,
+						status: 'consultation',
+						symptoms: symptoms,
+					},
+				},
+			};
+
+			const response = await authFetch('http://localhost:6969/patient/updatePatient', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ doctorEmail, patientEmail, content: symptoms }),
+				body: JSON.stringify(patientDataToUpdate),
 			});
-			if (presResponse.status === 500) {
-				toast.error('Internal server error');
-				return;
-			} else {
-				toast.success('Prescription submitted successfully');
+
+			if (response.ok) {
+				const updatedPatient = await response.json();
+				console.log('Patient updated successfully:', updatedPatient);
+				toast.success('Consultation request sent successfully');
 				setTimeout(() => {
-					setShowModal(false);
-					setInputValue('');
+					handleCloseModal();
 				}, 2000);
-				return;
+			} else {
+				const errorMessage = await response.text();
+				console.error('Error updating patient:', errorMessage);
+				toast.error('Internal server error');
 			}
 		} catch (error) {
 			console.error(error);
