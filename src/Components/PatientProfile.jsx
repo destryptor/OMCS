@@ -62,7 +62,7 @@ const PatientProfile = () => {
 
 	return (
 		<>
-			<div className='h-dvh min-w-80  bg-white shadow overflow-hidden sm:rounded-lg'>
+			<div className='min-h-dvh min-w-80  bg-white shadow overflow-hidden sm:rounded-lg'>
 				<div className='px-4 py-5 sm:px-6'>
 					<h3 className='text-lg leading-6 font-medium text-gray-900'>Patient Information</h3>
 					<p className='mt-1 max-w-2xl text-sm text-gray-500'>Your personal details.</p>
@@ -73,7 +73,7 @@ const PatientProfile = () => {
 							<dt className='text-sm font-medium text-gray-500'>Name</dt>
 							<dd className='text-sm text-gray-900 sm:col-span-2'>{patient.name}</dd>
 						</div>
-						<div className='bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+						<div className='bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Email address</dt>
 							<dd className='text-sm text-gray-900 sm:col-span-2'>{patient.email}</dd>
 						</div>
@@ -81,7 +81,7 @@ const PatientProfile = () => {
 							<dt className='text-sm font-medium text-gray-500'>Age</dt>
 							<dd className='text-sm text-gray-900 sm:col-span-2'>{patient.age}</dd>
 						</div>
-						<div className='bg-white-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+						<div className='bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
 							<dt className='text-sm font-medium text-gray-500'>Location</dt>
 							<dd className='text-sm text-gray-900 sm:col-span-2'>{patient.location}</dd>
 						</div>
