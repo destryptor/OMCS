@@ -1,4 +1,4 @@
-import React , {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
@@ -6,16 +6,31 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 const Navbar = () => {
 	const navigator = useNavigate();
 
-	function JWT(){
-		const jwtToken = localStorage.getItem('jwtToken');
+	function logout() {
+		document.cookie = 'jwtToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+	}
+
+	function getJwtToken() {
+		const cookies = document.cookie.split(';').map((cookie) => cookie.trim());
+		for (const cookie of cookies) {
+			const [name, value] = cookie.split('=');
+			if (name === 'jwtToken') {
+				return value;
+			}
+		}
+		return null;
+	}
+
+	function JWT() {
+		const jwtToken = getJwtToken();
 		return jwtToken;
 	}
-	useEffect(()=>{
+	useEffect(() => {
 		JWT();
-	},[]);
+	}, []);
 	const handleSignout = () => {
-		localStorage.removeItem('jwtToken');
-		localStorage.removeItem('userEmail');
+		logout();
+		localStorage.clear();
 		navigator('/');
 	};
 
@@ -52,12 +67,12 @@ const Navbar = () => {
 											<Menu.Item>
 												{({ active }) => (
 													<>
-													<Link to='/update-profile' className={classNames(active ? 'bg-gray-100 m-auto w-full rounded' : '', 'block md:hidden py-2 text-sm text-gray-700 m-auto w-full rounded')}>
+														<Link to='/update-profile' className={classNames(active ? 'bg-gray-100 m-auto w-full rounded' : '', 'block md:hidden py-2 text-sm text-gray-700 m-auto w-full rounded')}>
 															Profile
-													</Link>
-													<button className={classNames(active ? 'bg-gray-100 m-auto w-full rounded' : '', 'block px-4 py-2 text-sm text-gray-700 m-auto w-full rounded')} onClick={handleSignout}>
-														Sign out
-													</button>
+														</Link>
+														<button className={classNames(active ? 'bg-gray-100 m-auto w-full rounded' : '', 'block px-4 py-2 text-sm text-gray-700 m-auto w-full rounded')} onClick={handleSignout}>
+															Sign out
+														</button>
 													</>
 												)}
 											</Menu.Item>

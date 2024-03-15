@@ -7,8 +7,19 @@ const PatientProfile = () => {
 	const email = localStorage.getItem('userEmail');
 	const [patient, setPatient] = useState({});
 
+	function getJwtToken() {
+		const cookies = document.cookie.split(';').map((cookie) => cookie.trim());
+		for (const cookie of cookies) {
+			const [name, value] = cookie.split('=');
+			if (name === 'jwtToken') {
+				return value;
+			}
+		}
+		return null;
+	}
+
 	const authFetch = async (url, options = {}) => {
-		const token = localStorage.getItem('jwtToken');
+		const token = getJwtToken();
 
 		const headers = {
 			'Content-Type': 'application/json',
@@ -29,7 +40,7 @@ const PatientProfile = () => {
 	};
 
 	useEffect(() => {
-		const token = localStorage.getItem('jwtToken');
+		const token = getJwtToken();
 		if (!token) {
 			alert('Access denied. Please login first!');
 			navigator('/patient-login');
@@ -57,7 +68,7 @@ const PatientProfile = () => {
 	}, [email]);
 
 	const handleEdit = () => {
-		navigator('/update-profile?isDoctor=false');
+		navigator('/update-profile');
 	};
 
 	return (

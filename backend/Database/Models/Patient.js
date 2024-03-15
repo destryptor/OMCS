@@ -10,8 +10,9 @@ const patientSchema = new mongoose.Schema(
 		symptoms: { type: String, default: '' },
 		doctor: [
 			{
-				_id: { type: mongoose.Schema.Types.ObjectId, required: true },
+				email: { type: String, required: true },
 				status: { type: String, default: 'Pending' },
+				symptoms: { type: String, default: '' },
 			},
 		],
 	},
