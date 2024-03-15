@@ -74,7 +74,7 @@ export default function DoctorCard(props) {
 		<>
 			<Toaster />
 			{showModal && (
-				<div className='fixed inset-0 z-10 overflow-y-auto' aria-labelledby='modal-title' role='dialog' aria-modal='true'>
+				<div className='fixed inset-0 z-10 overflow-y-auto ' aria-labelledby='modal-title' role='dialog' aria-modal='true'>
 					<div className='flex flex-col items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
 						<div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' aria-hidden='true'></div>
 						<span className='hidden sm:inline-block sm:align-middle sm:h-screen' aria-hidden='true'>
@@ -121,7 +121,7 @@ export default function DoctorCard(props) {
 					</div>
 				</div>
 			)}
-			<div className='p-5 m-2 w-full border-solid border-2 border-green-600  rounded-lg shadow-md bg-stone-100 hover:scale-105 transition-all	'>
+			<div className='p-5 m-2 w-full border-solid border-2 border-green-600  rounded-lg shadow-md bg-stone-100 hover:scale-105 transition-all 	'>
 				<div className='flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row'>
 					<div className=''>
 						<h4 className='text-lg font-bold text-left mx-2'>Dr. {props.name}</h4>
