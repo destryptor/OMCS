@@ -9,7 +9,7 @@ const { JWT_SECRET } = process.env;
 function generateToken(user, role) {
 	return jwt.sign({ userId: user._id, email: user.email, role: role }, JWT_SECRET, { expiresIn: '1h' });
 }
-
+ 
 function authenticateToken(req, res, next) {
 	const token = req.headers['authorization'];
 

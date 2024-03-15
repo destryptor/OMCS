@@ -86,7 +86,7 @@ function DoctorData({ location }) {
 		<>
 			<Toaster />
 
-			<div className={`flex flex-wrap max-w-screen-lg m-auto   px-5`}>
+			<div className={`flex flex-wrap max-w-screen-lg m-auto   px-5 w-full`}>
 				{isData ? (
 					Data.map((data, index) => <DoctorCard key={index} name={data.name} specialisation={data.specialisation} clinic={data.clinic} workingHours={data.workingHours} location={data.location} email={data.email} doctor_id={data._id} />)
 				) : (
