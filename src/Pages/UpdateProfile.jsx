@@ -9,16 +9,25 @@ function UpdateProfile() {
 	const [doctor, setDoctor] = useState({});
 	const [patient, setPatient] = useState({});
 
-	const location = useLocation();
-	const searchParams = new URLSearchParams(location.search);
-	const isDoctor = searchParams.get('isDoctor') === 'true' ? true : false;
+	function getJwtToken() {
+		const cookies = document.cookie.split(';').map((cookie) => cookie.trim());
+		for (const cookie of cookies) {
+			const [name, value] = cookie.split('=');
+			if (name === 'jwtToken') {
+				return value;
+			}
+		}
+		return null;
+	}
+
+	const isDoctor = localStorage.getItem('isDoctor') === 'true';
 
 	const email = localStorage.getItem('userEmail');
 
 	const authFetch = async (url, options = {}) => {
-		const token = localStorage.getItem('jwtToken');
+		const token = getJwtToken();
 
-		const headers = { 
+		const headers = {
 			'Content-Type': 'application/json',
 		};
 
@@ -37,7 +46,7 @@ function UpdateProfile() {
 	};
 
 	useEffect(() => {
-		const jwtToken = localStorage.getItem('jwtToken');
+		const jwtToken = getJwtToken();
 		if (!jwtToken) {
 			console.log('You are not logged in. Please login to continue!');
 			toast.error('You are not logged in. Please login to continue!');

@@ -36,7 +36,9 @@ const Login = ({ isDoctor }) => {
 				} else {
 					toast.success('Logged in successfully');
 					const { token } = await response.json();
-					localStorage.setItem('jwtToken', token);
+
+					document.cookie = `jwtToken=${token}; expires=${new Date(new Date().getTime() + 3600000).toUTCString()}; path=/`;
+
 					localStorage.setItem('userEmail', email);
 					localStorage.setItem('isDoctor', true);
 					setTimeout(() => navigator('/doctor-dashboard'), 2000);
@@ -65,7 +67,8 @@ const Login = ({ isDoctor }) => {
 				} else {
 					toast.success('Logged in successfully');
 					const { token } = await response.json();
-					localStorage.setItem('jwtToken', token);
+					document.cookie = `jwtToken=${token}; expires=${new Date(new Date().getTime() + 3600000).toUTCString()}; path=/`;
+
 					localStorage.setItem('userEmail', email);
 					localStorage.setItem('isDoctor', false);
 					setTimeout(() => navigator('/patient-dashboard'), 2000);
@@ -124,7 +127,8 @@ const Login = ({ isDoctor }) => {
 				} else {
 					toast.success('Account created succesfully!');
 					const data = await response.json();
-					localStorage.setItem('jwtToken', data.token);
+					document.cookie = `jwtToken=${data.token}; expires=${new Date(new Date().getTime() + 3600000).toUTCString()}; path=/`;
+
 					localStorage.setItem('userEmail', email);
 					localStorage.setItem('isDoctor', true);
 					setTimeout(() => navigator(`/update-profile?isDoctor=${isDoctor}`), 2000);
@@ -146,7 +150,7 @@ const Login = ({ isDoctor }) => {
 				} else {
 					toast.success('Account created succesfully!');
 					const data = await response.json();
-					localStorage.setItem('jwtToken', data.token);
+					document.cookie = `jwtToken=${data.token}; expires=${new Date(new Date().getTime() + 3600000).toUTCString()}; path=/`;
 					localStorage.setItem('userEmail', email);
 					localStorage.setItem('isDoctor', false);
 					setTimeout(() => navigator(`/update-profile?isDoctor=${isDoctor}`), 2000);
