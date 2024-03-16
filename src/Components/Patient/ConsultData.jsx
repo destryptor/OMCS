@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import ConsultCard from '../Components/ConsultCard';
+import ConsultCard from './ConsultCard';
 
 function ConsultData() {
 	const [Data, setData] = useState([]);

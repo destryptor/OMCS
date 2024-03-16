@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PatientProfile from '../Components/PatientProfile';
-import DoctorData from '../Components/DoctorData';
+import PatientProfile from '../Components/Patient/PatientProfile';
+import DoctorData from '../Components/Patient/DoctorData';
 import toast, { Toaster } from 'react-hot-toast';
 import { Routes, Route, Link, Outlet } from 'react-router-dom';
-import ConsultData from '../Components/ConsultData';
+import ConsultData from '../Components/Patient/ConsultData';
 
 const PatientDashBoard = () => {
 	const [location, setLocation] = useState('');
