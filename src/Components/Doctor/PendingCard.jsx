@@ -11,7 +11,7 @@ export default function DoctorCard(props) {
             </h4>
             <div className="flex">
               <div className="mx-2">
-                <div className="text-md font-bold text-center md:text-left">
+                <div className="text-md font-bold  text-left">
                   Age -{" "}
                   <span className="text-gray-600 font-semibold text-sm">
                     {props.age}

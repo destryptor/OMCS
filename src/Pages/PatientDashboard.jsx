@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PatientProfile from '../Components/PatientProfile';
-import DoctorData from '../Components/DoctorData';
+import PatientProfile from '../Components/Patient/PatientProfile';
+import DoctorData from '../Components/Patient/DoctorData';
 import toast, { Toaster } from 'react-hot-toast';
 import { Routes, Route, Link, Outlet } from 'react-router-dom';
-import ConsultData from '../Components/ConsultData';
+import ConsultData from '../Components//Patient/ConsultData';
 
 const PatientDashBoard = () => {
 	const [location, setLocation] = useState('');
@@ -124,7 +124,7 @@ const PatientDashBoard = () => {
 							)}
 						</div>
 						{/* Needs styling... */}
-						<h2 class='m-auto font-bold my-2'>{window.location.pathname === '/patient-dashboard/pending' ? 'Pending Consultations' : 'List of available doctors'}</h2>
+						<h2 class='m-auto font-bold my-2 text-xl uppercase'>{window.location.pathname === '/patient-dashboard/pending' ? 'Pending Consultations' : 'List of available doctors'}</h2>
 
 						<Routes>
 							<Route path='/' element={<DoctorData location={location} />} />

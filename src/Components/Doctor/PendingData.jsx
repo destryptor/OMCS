@@ -8,7 +8,7 @@ function ConsultData({ location }) {
     <>
       <Toaster />
 
-      <div className={`flex flex-wrap max-w-screen-lg m-auto   px-5`}>
+      <div className={`flex flex-wrap max-w-screen-lg m-auto  px-5`}>
         {Data.map((data, index) => (
           <PendingCard
             key={index}

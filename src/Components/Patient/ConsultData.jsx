@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import ConsultCard from '../Components/ConsultCard';
+import ConsultCard from './ConsultCard';
 
 function ConsultData() {
 	const [Data, setData] = useState([]);
@@ -79,6 +79,7 @@ function ConsultData() {
 				DoctorData.push(...filteredDoctorsWithSymptoms);
 				setData(DoctorData);
 				setIsData(true);
+			
 			} catch (error) {
 				console.error(error);
 				toast.error('Internal server error');
@@ -95,7 +96,7 @@ function ConsultData() {
 			<p>Loading...</p>
 		  ) : (
 			<div className={`flex flex-wrap max-w-screen-lg m-auto px-5`}>
-			  {isData ? (
+			  {Data.length	 > 0 ? (
 				Data.map((data, index) => (
 				  <ConsultCard
 					key={index}
@@ -110,7 +111,7 @@ function ConsultData() {
 				<div className='p-5 m-2 border-solid border-2 border-red-600 rounded-lg shadow-md bg-stone-100 hover:scale-105 transition-all m-auto'>
 				  <div className='flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row'>
 					<div className=''>
-					  <h4 className='text-lg font-bold text-left mx-2 text-red-700'>No Doctor Available</h4>
+					  <h4 className='text-lg font-bold text-left mx-2 text-red-700'>No Consultations Pending...</h4>
 					</div>
 				  </div>
 				</div>

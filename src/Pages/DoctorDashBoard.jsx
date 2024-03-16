@@ -1,49 +1,53 @@
-import React from 'react';
-import DoctorProfile from '../Components/DoctorProfile';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
-
+import React from "react";
+import DoctorProfile from "../Components/Doctor/DoctorProfile";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+import PendingData from "../Components/Doctor/PendingData";
 const DoctorDashBoard = () => {
-	const navigator = useNavigate();
+  const navigator = useNavigate();
 
-	const email = localStorage.getItem('userEmail');
-	const isDoctor = localStorage.getItem('isDoctor');
-	function getJwtToken() {
-		const cookies = document.cookie.split(';').map((cookie) => cookie.trim());
-		for (const cookie of cookies) {
-			const [name, value] = cookie.split('=');
-			if (name === 'jwtToken') {
-				return value;
-			}
-		}
-		return null;
-	}
+  const email = localStorage.getItem("userEmail");
+  const isDoctor = localStorage.getItem("isDoctor");
+  function getJwtToken() {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split("=");
+      if (name === "jwtToken") {
+        return value;
+      }
+    }
+    return null;
+  }
 
-	useEffect(() => {
-		const jwtToken = getJwtToken();
-		if (!jwtToken) {
-			toast.error('Access denied. Please login first!');
-			setTimeout(() => {
-				return navigator('/doctor-login');
-			}, 1500);
-		} else if (isDoctor === 'false') {
-			toast.error('Access denied. Please login as a doctor!');
-			setTimeout(() => {
-				return navigator('/doctor-login');
-			}, 1500);
-		}
-	}, []);
+  useEffect(() => {
+    const jwtToken = getJwtToken();
+    if (!jwtToken) {
+      toast.error("Access denied. Please login first!");
+      setTimeout(() => {
+        return navigator("/doctor-login");
+      }, 1500);
+    } else if (isDoctor === "false") {
+      toast.error("Access denied. Please login as a doctor!");
+      setTimeout(() => {
+        return navigator("/doctor-login");
+      }, 1500);
+    }
+  }, []);
 
-	return (
-		<div>
-			<div className='flex relative'>
-				<div className='hidden md:block fixed right-0 top-16'>
-					<DoctorProfile />
-				</div>
-			</div>
-		</div>
-	);
+  return (
+    <div>
+      <div className="flex relative">
+        <div className="flex flex-col justify-center w-full md:w-[calc(100%-24rem)] py-24">
+		<h2 class='m-auto font-bold my-2 uppercase text-xl'>Pending Consultations</h2>
+          <PendingData></PendingData>
+        </div>
+        <div className="hidden md:block fixed right-0 top-16">
+          <DoctorProfile />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default DoctorDashBoard;
