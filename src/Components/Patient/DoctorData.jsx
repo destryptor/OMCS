@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 function DoctorData({ location }) {
+	
 	const [Data, setData] = useState([]);
 	const [isData, setIsData] = useState(false);
 
@@ -85,6 +86,7 @@ function DoctorData({ location }) {
 					}
 					return 0;
 				});
+				
 				setData(doctorsData);
 				setIsData(true);
 			} catch (error) {
