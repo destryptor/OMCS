@@ -9,7 +9,7 @@ const { JWT_SECRET } = process.env;
 function generateToken(user, role) {
 	return jwt.sign({ userId: user._id, email: user.email, role: role }, JWT_SECRET, { expiresIn: '1h' });
 }
- 
+
 function authenticateToken(req, res, next) {
 	const token = req.headers['authorization'];
 
@@ -117,7 +117,7 @@ doctorRouter.post('/createDoctor', async (req, res) => {
 doctorRouter.post('/updateDoctor', authenticateToken, async (req, res) => {
 	try {
 		const doctorData = req.body;
-		const doctor = await Doctor.findOneAndUpdate({ _id: doctorData._id }, doctorData, { new: true });
+		const doctor = await Doctor.findOneAndUpdate({ email: doctorData.email }, doctorData, { new: true });
 
 		if (!doctor) {
 			return res.status(404).json({ message: 'Doctor not found' });
