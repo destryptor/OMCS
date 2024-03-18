@@ -90,35 +90,26 @@ function ConsultData() {
 	}, [jwtToken]);
 	return (
 		<>
-		  <Toaster />
-		  {isLoading ? (
-			<p>Loading...</p>
-		  ) : (
-			<div className={`flex flex-wrap max-w-screen-lg m-auto px-5`}>
-			  {isData ? (
-				Data.map((data, index) => (
-				  <ConsultCard
-					key={index}
-					name={data.name}
-					specialisation={data.specialisation}
-					clinic={data.clinic}
-					location={data.location}
-					symptoms={data.symptoms}
-				  />
-				)) 
-			  ) : (
-				<div className='p-5 m-2 border-solid border-2 border-red-600 rounded-lg shadow-md bg-stone-100 hover:scale-105 transition-all m-auto'>
-				  <div className='flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row'>
-					<div className=''>
-					  <h4 className='text-lg font-bold text-left mx-2 text-red-700'>No Doctor Available</h4>
-					</div>
-				  </div>
+			<Toaster />
+			{isLoading ? (
+				<p>Loading...</p>
+			) : (
+				<div className={`flex flex-wrap max-w-screen-lg mx-auto px-5`}>
+					{isData ? (
+						Data.map((data, index) => <ConsultCard key={index} name={data.name} specialisation={data.specialisation} clinic={data.clinic} location={data.location} symptoms={data.symptoms} />)
+					) : (
+						<div className='p-5 m-2 border-solid border-2 border-red-600 rounded-lg shadow-md bg-stone-100 hover:scale-105 transition-all m-auto'>
+							<div className='flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row'>
+								<div className=''>
+									<h4 className='text-lg font-bold text-left mx-2 text-red-700'>No Doctor Available</h4>
+								</div>
+							</div>
+						</div>
+					)}
 				</div>
-			  )}
-			</div>
-		  )}
+			)}
 		</>
-	  );
+	);
 }
 
 export default ConsultData;
