@@ -92,6 +92,34 @@ export default function DoctorCard(props) {
 			toast.error('Internal server error');
 			return;
 		}
+
+		try {
+			const doctorResponse = await authFetch('http://localhost:6969/doctor/updateDoctor', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					email: doctorEmail,
+					$push: {
+						patients: {
+							email: patientEmail,
+							status: 'consultation',
+							symptoms: symptoms,
+						},
+					},
+				}),
+			});
+
+			if (doctorResponse.ok) {
+				const updatedDoctor = await doctorResponse.json();
+				console.log('Doctor updated successfully:', updatedDoctor);
+			} else if (doctorResponse.status === 500) {
+				return toast.error('Internal server error');
+			}
+		} catch (e) {
+			console.error(e);
+		}
 	};
 
 	return (

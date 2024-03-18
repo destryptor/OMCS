@@ -1,5 +1,6 @@
 import React from 'react';
 import DoctorProfile from '../Components/Doctor/DoctorProfile';
+import PendingData from '../Components/Doctor/PendingData';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
@@ -38,6 +39,8 @@ const DoctorDashBoard = () => {
 	return (
 		<div>
 			<div className='flex relative'>
+				<h2 class='m-auto font-bold my-2'>'Pending Consultations'</h2>
+				<PendingData />
 				<div className='hidden md:block fixed right-0 top-16'>
 					<DoctorProfile />
 				</div>
