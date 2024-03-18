@@ -9,8 +9,8 @@ import ConsultData from '../Components/Patient/ConsultData';
 const PatientDashBoard = () => {
 	const [location, setLocation] = useState();
 	const [isLoading, setIsLoading] = useState(true);
-	const [loc,setloc]=useState(true);//to store the patient's location once fetched
-    const Location=useLocation();//path location
+	const [loc, setloc] = useState(true); //to store the patient's location once fetched
+	const Location = useLocation(); //path location
 	const email = localStorage.getItem('userEmail');
 	const isDoctor = localStorage.getItem('isDoctor');
 	function getJwtToken() {
@@ -45,16 +45,17 @@ const PatientDashBoard = () => {
 		});
 	};
 
-    useEffect(() => {
+	useEffect(() => {
 		if (Location.pathname === '/patient-dashboard') {
 			setLocation(loc);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [Location.pathname]);
-	
-		const handleLocationChange = async (event) => {
-			const changedlocation = event.target.value;
-			setLocation(changedlocation);
-	 };
+
+	const handleLocationChange = async (event) => {
+		const changedlocation = event.target.value;
+		setLocation(changedlocation);
+	};
 
 	useEffect(() => {
 		const jwtToken = getJwtToken();
@@ -99,10 +100,9 @@ const PatientDashBoard = () => {
 			};
 			fetchData();
 		}
-    //eslint-disable-next-line react-hooks/exhaustive-deps
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-    
-		
+
 	return (
 		<>
 			<Toaster />
@@ -117,12 +117,12 @@ const PatientDashBoard = () => {
 								<select id='countries' className='block m-2 md:min-w-48 rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 h-8' onChange={handleLocationChange} value={location}>
 									<option value={loc}>{loc} ( Current location )</option>
 									<option value='Jaipur'>Jaipur</option>
-									<option value='Delhi' >Delhi</option>
+									<option value='Delhi'>Delhi</option>
 									<option value='Bangalore'>Bangalore</option>
 									<option value='Kharagpur'>Kharagpur</option>
 								</select>
 							)}
-							{window.location.pathname === '/patient-dashboard/pending' ?(
+							{window.location.pathname === '/patient-dashboard/pending' ? (
 								<Link to='/patient-dashboard' className='m-2 flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'>
 									All Doctors - Here
 								</Link>
@@ -136,7 +136,7 @@ const PatientDashBoard = () => {
 						<h2 class='m-auto font-bold my-2'>{window.location.pathname === '/patient-dashboard/pending' ? 'Pending Consultations' : 'List of available doctors'}</h2>
 
 						<Routes>
-							<Route path='/' element={<DoctorData location={location}/>} />
+							<Route path='/' element={<DoctorData location={location} />} />
 							<Route path='/pending' element={<ConsultData />} />
 							<Route path='/patient-dashboard' element={<Outlet />} />
 						</Routes>

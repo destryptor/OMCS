@@ -97,40 +97,70 @@ function UpdateProfile() {
 				const workingHours = [
 					{
 						day: 'Monday',
-						from: document.getElementById('monday-from').value,
-						to: document.getElementById('monday-to').value,
+						from: document.getElementById('monday-from').value === '' ? (document.getElementById('monday-from-span').innerText.includes(': ') ? document.getElementById('monday-from-span').innerText.split(': ')[1] : '') : document.getElementById('monday-from').value,
+						to: document.getElementById('monday-to').value === '' ? (document.getElementById('monday-to-span').innerText.includes(': ') ? document.getElementById('monday-to-span').innerText.split(': ')[1] : '') : document.getElementById('monday-to').value,
 					},
 					{
 						day: 'Tuesday',
-						from: document.getElementById('tuesday-from').value,
-						to: document.getElementById('tuesday-to').value,
+						from: document.getElementById('tuesday-from').value === '' ? (document.getElementById('tuesday-from-span').innerText.includes(': ') ? document.getElementById('tuesday-from-span').innerText.split(': ')[1] : '') : document.getElementById('tuesday-from').value,
+						to: document.getElementById('tuesday-to').value === '' ? (document.getElementById('tuesday-to-span').innerText.includes(': ') ? document.getElementById('tuesday-to-span').innerText.split(': ')[1] : '') : document.getElementById('tuesday-to').value,
 					},
 					{
 						day: 'Wednesday',
-						from: document.getElementById('wednesday-from').value,
-						to: document.getElementById('wednesday-to').value,
+						from: document.getElementById('wednesday-from').value === '' ? (document.getElementById('wednesday-from-span').innerText.includes(': ') ? document.getElementById('wednesday-from-span').innerText.split(': ')[1] : '') : document.getElementById('wednesday-from').value,
+						to: document.getElementById('wednesday-to').value === '' ? (document.getElementById('wednesday-to-span').innerText.includes(': ') ? document.getElementById('wednesday-to-span').innerText.split(': ')[1] : '') : document.getElementById('wednesday-to').value,
 					},
 					{
 						day: 'Thursday',
-						from: document.getElementById('thursday-from').value,
-						to: document.getElementById('thursday-to').value,
+						from: document.getElementById('thursday-from').value === '' ? (document.getElementById('thursday-from-span').innerText.includes(': ') ? document.getElementById('thursday-from-span').innerText.split(': ')[1] : '') : document.getElementById('thursday-from').value,
+						to: document.getElementById('thursday-to').value === '' ? (document.getElementById('thursday-to-span').innerText.includes(': ') ? document.getElementById('thursday-to-span').innerText.split(': ')[1] : '') : document.getElementById('thursday-to').value,
 					},
 					{
 						day: 'Friday',
-						from: document.getElementById('friday-from').value,
-						to: document.getElementById('friday-to').value,
+						from: document.getElementById('friday-from').value === '' ? (document.getElementById('friday-from-span').innerText.includes(': ') ? document.getElementById('friday-from-span').innerText.split(': ')[1] : '') : document.getElementById('friday-from').value,
+						to: document.getElementById('friday-to').value === '' ? (document.getElementById('friday-to-span').innerText.includes(': ') ? document.getElementById('friday-to-span').innerText.split(': ')[1] : '') : document.getElementById('friday-to').value,
 					},
 					{
 						day: 'Saturday',
-						from: document.getElementById('saturday-from').value,
-						to: document.getElementById('saturday-to').value,
+						from: document.getElementById('saturday-from').value === '' ? (document.getElementById('saturday-from-span').innerText.includes(': ') ? document.getElementById('saturday-from-span').innerText.split(': ')[1] : '') : document.getElementById('saturday-from').value,
+						to: document.getElementById('saturday-to').value === '' ? (document.getElementById('saturday-to-span').innerText.includes(': ') ? document.getElementById('saturday-to-span').innerText.split(': ')[1] : '') : document.getElementById('saturday-to').value,
 					},
 					{
 						day: 'Sunday',
-						from: document.getElementById('sunday-from').value,
-						to: document.getElementById('sunday-to').value,
+						from: document.getElementById('sunday-from').value === '' ? (document.getElementById('sunday-from-span').innerText.includes(': ') ? document.getElementById('sunday-from-span').innerText.split(': ')[1] : '') : document.getElementById('sunday-from').value,
+						to: document.getElementById('sunday-to').value === '' ? (document.getElementById('sunday-to-span').innerText.includes(': ') ? document.getElementById('sunday-to-span').innerText.split(': ')[1] : '') : document.getElementById('sunday-to').value,
 					},
 				];
+
+				console.log(workingHours);
+
+				let flag = false;
+
+				workingHours.forEach((workingHour) => {
+					if (workingHour.from !== '' || workingHour.to !== '') {
+						if (workingHour.from === '' || workingHour.to === '') {
+							flag = true;
+							return toast.error('Please fill all the working hours for ' + workingHour.day);
+						}
+					}
+
+					const fromArr = workingHour.from.split(':');
+					const toArr = workingHour.to.split(':');
+
+					if (parseInt(fromArr[0]) > parseInt(toArr[0])) {
+						flag = true;
+						return toast.error('From time cannot be later than To time for ' + workingHour.day);
+					}
+
+					if (parseInt(fromArr[0]) === parseInt(toArr[0])) {
+						if (parseInt(fromArr[1]) >= parseInt(toArr[1])) {
+							flag = true;
+							return toast.error('From time cannot be later than To time for ' + workingHour.day);
+						}
+					}
+				});
+
+				if (flag === true) return;
 
 				const updatedDoctor = {
 					_id,
@@ -258,12 +288,41 @@ function UpdateProfile() {
 								</div>
 								<div className='mt-1'>
 									{['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day, index) => (
-										<div key={index} className='grid grid-cols-3 gap-x-4 gap-y-2'>
-											<label htmlFor={`${day.toLowerCase()}-from`} className='block text-sm font-medium leading-6 text-gray-900'>
-												{day}
+										<div key={index} className='grid grid-cols-4 gap-x-4 gap-y-2 mt-1 mb-5'>
+											<label htmlFor={`${day.toLowerCase()}-from`} className='block text-sm font-medium leading-6 text-gray-900 underline mt-1'>
+												{day}:
 											</label>
-											<input id={`${day.toLowerCase()}-from`} name={`${day.toLowerCase()}-from`} type='text' autoComplete={`${day.toLowerCase()}-from`} required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 m-2' placeholder='From' defaultValue={doctor.workingHours && doctor.workingHours[index] ? doctor.workingHours[index].from : ''} />
-											<input id={`${day.toLowerCase()}-to`} name={`${day.toLowerCase()}-to`} type='text' autoComplete={`${day.toLowerCase()}-to`} required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 m-2' placeholder='To' defaultValue={doctor.workingHours && doctor.workingHours[index] ? doctor.workingHours[index].to : ''} />
+											<span id={`${day.toLowerCase()}-from-span`} className='block text-sm font-medium leading-6 text-gray-900 ml-2 mt-1'>
+												From: {doctor.workingHours && doctor.workingHours[index] ? doctor.workingHours[index].from : ''}{' '}
+											</span>
+											<span id={`${day.toLowerCase()}-to-span`} className='block text-sm font-medium leading-6 text-gray-900 ml-2 mt-1'>
+												To: {doctor.workingHours && doctor.workingHours[index] ? doctor.workingHours[index].to : ''}{' '}
+											</span>
+											<button
+												id={`${day.toLowerCase()}-remove`}
+												type='button'
+												className='rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600'
+												onClick={(e) => {
+													document.getElementById(`${day.toLowerCase()}-from-span`).innerText = 'From:';
+													document.getElementById(`${day.toLowerCase()}-to-span`).innerText = 'To:';
+												}}
+											>
+												Remove
+											</button>
+											<span className='block text-sm font-medium leading-6 text-gray-900 mt-1'>Edit Timings: </span>
+											<input id={`${day.toLowerCase()}-from`} name={`${day.toLowerCase()}-from`} type='time' autoComplete={`${day.toLowerCase()}-from`} required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 mx-2' />
+											<input id={`${day.toLowerCase()}-to`} name={`${day.toLowerCase()}-to`} type='time' autoComplete={`${day.toLowerCase()}-to`} required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 mx-2' />
+											<button
+												id={`${day.toLowerCase()}-reset`}
+												type='button'
+												className='rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600'
+												onClick={(e) => {
+													document.getElementById(`${day.toLowerCase()}-from`).value = '';
+													document.getElementById(`${day.toLowerCase()}-to`).value = '';
+												}}
+											>
+												Reset
+											</button>
 										</div>
 									))}
 								</div>
