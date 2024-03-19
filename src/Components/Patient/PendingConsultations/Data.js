@@ -1,5 +1,6 @@
 const data =[
     {
+        sr: '1',
         name: "Dr. John Doe",
         specialisation: "Cardiologist",
         clinic: "Apollo Hospital",
@@ -7,6 +8,7 @@ const data =[
         symptoms: "Chest Pain, Shortness of breath, Dizziness"
     },
     {
+        sr: '2',
         name: "Dr. Jane Doe",
         specialisation: "Dermatologist",
         clinic: "Fortis Hospital",
@@ -14,6 +16,7 @@ const data =[
         symptoms: "Rashes, Itching, Dry skin"
     },
     {
+        sr: '3',
         name: "Dr. Michael Doe",
         specialisation: "Gynaecologist",
         clinic: "Apollo Hospital",
@@ -21,6 +24,7 @@ const data =[
         symptoms: "Irregular periods, Pain in lower abdomen, Vaginal discharge"
     },
     {
+        sr: '4',
         name: "Dr. Emily Doe",
         specialisation: "Neurologist",
         clinic: "Fortis Hospital",

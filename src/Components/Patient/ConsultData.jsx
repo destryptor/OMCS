@@ -93,7 +93,7 @@ function ConsultData() {
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
-				<div className={`flex flex-wrap max-w-screen-lg mx-auto px-5`}>
+				<div className={`flex flex-wrap max-w-screen-lg mx-auto px-5 w-full`}>
 					{Data.length ? (
 						Data.map((data, index) => <ConsultCard key={index} name={data.name} specialisation={data.specialisation} clinic={data.clinic} location={data.location} symptoms={data.symptoms} />)
 					) : (
