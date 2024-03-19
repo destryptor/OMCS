@@ -55,71 +55,126 @@ export default function DoctorCard(props) {
 		const doctorEmail = props.email;
 		const patientEmail = localStorage.getItem('userEmail');
 		const symptoms = inputValue;
+		let dupFlag = false;
 		try {
-			const patientDataToUpdate = {
-				email: patientEmail,
-				$push: {
-					doctor: {
-						email: doctorEmail,
-						status: 'consultation',
-						symptoms: symptoms,
-					},
-				},
-			};
-
-			const response = await authFetch('http://localhost:6969/patient/updatePatient', {
+			const patientResponse = await authFetch('http://localhost:6969/patient/getByEmail', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(patientDataToUpdate),
+				body: JSON.stringify({
+					email: patientEmail,
+				}),
+			});
+			if (patientResponse.status === 500) {
+				return toast.error('Internal server error');
+			}
+			const patient = await patientResponse.json();
+			patient.doctor.map((doctor) => {
+				if (!dupFlag) {
+					if (doctor.email === doctorEmail) {
+						if (doctor.status === 'consultation') {
+							dupFlag = true;
+							return toast.error('A previous consultation request already exists. Please wait for the Doctor to respond.');
+						}
+					}
+				}
 			});
 
-			if (response.ok) {
-				const updatedPatient = await response.json();
-				console.log('Patient updated successfully:', updatedPatient);
-				toast.success('Consultation request sent successfully');
-				setTimeout(() => {
-					handleCloseModal();
-				}, 2000);
-			} else {
-				const errorMessage = await response.text();
-				console.error('Error updating patient:', errorMessage);
-				toast.error('Internal server error');
+			if (!dupFlag) {
+				const patientDataToUpdate = {
+					email: patientEmail,
+					$push: {
+						doctor: {
+							email: doctorEmail,
+							status: 'consultation',
+							symptoms: symptoms,
+						},
+					},
+				};
+
+				const response = await authFetch('http://localhost:6969/patient/updatePatient', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(patientDataToUpdate),
+				});
+				if (response.ok) {
+					const updatedPatient = await response.json();
+					console.log('Patient updated successfully:', updatedPatient);
+					toast.success('Consultation request sent successfully');
+					setTimeout(() => {
+						handleCloseModal();
+					}, 2000);
+				} else {
+					const errorMessage = await response.text();
+					console.error('Error updating patient:', errorMessage);
+					toast.error('Internal server error');
+				}
 			}
 		} catch (error) {
 			console.error(error);
 			toast.error('Internal server error');
 			return;
 		}
-
-		try {
-			const doctorResponse = await authFetch('http://localhost:6969/doctor/updateDoctor', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					email: doctorEmail,
-					$push: {
-						patients: {
-							email: patientEmail,
-							status: 'consultation',
-							symptoms: symptoms,
-						},
+		let dupFlag2 = false;
+		if (!dupFlag) {
+			try {
+				const doctorResponse = await authFetch('http://localhost:6969/doctor/getByEmail', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
 					},
-				}),
-			});
+					body: JSON.stringify({
+						email: doctorEmail,
+					}),
+				});
+				if (doctorResponse.status === 500) {
+					return toast.error('Internal server error');
+				}
+				const doctor = await doctorResponse.json();
+				doctor.patients.map((patient) => {
+					if (!dupFlag2) {
+						if (patient.email === patientEmail) {
+							if (patient.status === 'consultation') {
+								dupFlag2 = true;
+								return toast.error('A previous consultation request already exist. Please wait for the Doctor to respond.');
+							}
+						}
+					}
+				});
 
-			if (doctorResponse.ok) {
-				const updatedDoctor = await doctorResponse.json();
-				console.log('Doctor updated successfully:', updatedDoctor);
-			} else if (doctorResponse.status === 500) {
-				return toast.error('Internal server error');
+				if (!dupFlag2) {
+					const doctorResponse2 = await authFetch('http://localhost:6969/doctor/updateDoctor', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({
+							email: doctorEmail,
+							$push: {
+								patients: {
+									email: patientEmail,
+									status: 'consultation',
+									symptoms: symptoms,
+								},
+							},
+						}),
+					});
+
+					if (doctorResponse2.ok) {
+						const updatedDoctor = await doctorResponse2.json();
+						console.log('Doctor updated successfully:', updatedDoctor);
+					} else if (doctorResponse2.status === 500) {
+						return toast.error('Internal server error');
+					}
+				}
+			} catch (e) {
+				console.error(e);
 			}
-		} catch (e) {
-			console.error(e);
 		}
+		setInputValue('');
 	};
 
 	return (

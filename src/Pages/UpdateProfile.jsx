@@ -133,7 +133,6 @@ function UpdateProfile() {
 				];
 
 				console.log(workingHours);
-
 				let flag = false;
 
 				workingHours.forEach((workingHour) => {
