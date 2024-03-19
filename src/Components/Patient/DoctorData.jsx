@@ -5,7 +5,6 @@ import toast, { Toaster } from 'react-hot-toast';
 
 function DoctorData({ location }) {
 	const [Data, setData] = useState([]);
-	const [isData, setIsData] = useState(false);
 
 	function getJwtToken() {
 		const cookies = document.cookie.split(';').map((cookie) => cookie.trim());
@@ -52,7 +51,6 @@ function DoctorData({ location }) {
 
 				if (doctorResponse.status === 404) {
 					setData({});
-					setIsData(false);
 					return;
 				}
 
@@ -86,7 +84,6 @@ function DoctorData({ location }) {
 					return 0;
 				});
 				setData(doctorsData);
-				setIsData(true);
 			} catch (error) {
 				console.log(error);
 			}
@@ -100,7 +97,7 @@ function DoctorData({ location }) {
 			<Toaster />
 
 			<div className={`flex flex-wrap max-w-screen-lg m-auto   px-5 w-full`}>
-				{isData ? (
+				{Data.length>0 ? (
 					Data.map((data, index) => <DoctorCard key={index} name={data.name} specialisation={data.specialisation} clinic={data.clinic} workingHours={data.workingHours} location={data.location} email={data.email} doctor_id={data._id} />)
 				) : (
 					<div className='p-5 m-2 border-solid border-2 border-red-600  rounded-lg shadow-md bg-stone-100 hover:scale-105 transition-all m-auto'>

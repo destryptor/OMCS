@@ -5,7 +5,6 @@ import ConsultCard from './ConsultCard';
 
 function ConsultData() {
 	const [Data, setData] = useState([]);
-	const [isData, setIsData] = useState(false);
 	const [isLoading, setLoading] = useState(true);
 	const email = localStorage.getItem('userEmail');
 
@@ -78,7 +77,6 @@ function ConsultData() {
 
 				DoctorData.push(...filteredDoctorsWithSymptoms);
 				setData(DoctorData);
-				setIsData(true);
 			
 			} catch (error) {
 				console.error(error);
