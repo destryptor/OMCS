@@ -43,9 +43,9 @@ const DoctorDashBoard = () => {
 					<h2 class='pt-24 m-auto font-bold my-2'>Pending Consultations</h2>
 					<PendingData status='consultation' />
 					<h2 class='pt-24 m-auto font-bold my-2'>Booked Appointments</h2>
-					{/* <PendingData status='pending' /> */}
+					 <PendingData status='appointment' /> 
 					<h2 class='pt-24 m-auto font-bold my-2'>Completed</h2>
-					{/* <PendingData status='pending' /> */}
+					<PendingData status='completed' />
 				</div>
 				<div className='hidden md:block fixed right-0 top-16'>
 					<DoctorProfile />
