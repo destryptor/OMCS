@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 function DoctorData({ location }) {
+	
 	const [Data, setData] = useState([]);
 
 	function getJwtToken() {
@@ -83,6 +84,7 @@ function DoctorData({ location }) {
 					}
 					return 0;
 				});
+				
 				setData(doctorsData);
 			} catch (error) {
 				console.log(error);

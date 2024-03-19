@@ -5,6 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const Login = ({ isDoctor }) => {
 	const [isLogin, setLogin] = useState(true);
+	const[showpassword,setshowpassword] = useState(false);
 	const navigator = useNavigate();
 
 	const handleLogin = async (event) => {
@@ -160,6 +161,9 @@ const Login = ({ isDoctor }) => {
 			console.log(error);
 		}
 	};
+	const Handleshowpassword = () => {
+        setshowpassword(!showpassword); 
+    };
 
 	return (
 		<>
@@ -189,8 +193,21 @@ const Login = ({ isDoctor }) => {
 									</label>
 								</div>
 								<div className='mt-2'>
-									<input id='password' name='password' type='password' autoComplete='current-password' required placeholder='Password' className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2 ' />
+									<input id='password' name='password' type={showpassword?'text':'password'} autoComplete='current-password' required placeholder='Password' className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2 ' />
 								</div>
+							</div>
+							<div className="mt-2 flex items-center">
+                                    <input
+                                        id="showPassword"
+                                        name="showPassword"
+                                        type="checkbox"
+                                        checked={showpassword}
+                                        onChange={Handleshowpassword}
+                                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                    />
+                                    <label htmlFor="showPassword" className="ml-2 block text-sm text-gray-900">
+                                        Show Password
+                                    </label>
 							</div>
 
 							<div>
@@ -233,10 +250,22 @@ const Login = ({ isDoctor }) => {
 									</label>
 								</div>
 								<div className='mt-2'>
-									<input id='password' name='password' type='password' autoComplete='current-password' required placeholder='Password' className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2 ' />
+									<input id='password' name='password' type={showpassword?'text':'password'} autoComplete='current-password' required placeholder='Password' className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2 ' />
 								</div>
 							</div>
-
+							<div className="mt-2 flex items-center">
+                                    <input
+                                        id="showPassword"
+                                        name="showPassword"
+                                        type="checkbox"
+                                        checked={showpassword}
+                                        onChange={Handleshowpassword}
+                                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                    />
+                                    <label htmlFor="showPassword" className="ml-2 block text-sm text-gray-900">
+                                        Show Password
+                                    </label>
+							</div>
 							<div>
 								<button type='submit' className='flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600' onClick={handleSignup}>
 									Sign up

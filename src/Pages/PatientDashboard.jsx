@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PatientProfile from '../Components/Patient/PatientProfile';
 import DoctorData from '../Components/Patient/DoctorData';
 import toast, { Toaster } from 'react-hot-toast';
 import { Routes, Route, Link, Outlet } from 'react-router-dom';
-import ConsultData from '../Components//Patient/ConsultData';
+import ConsultData from '../Components/Patient/ConsultData';
 
 const PatientDashBoard = () => {
-	const [location, setLocation] = useState('');
+	const [location, setLocation] = useState();
 	const [isLoading, setIsLoading] = useState(true);
-
+	const [loc, setloc] = useState(true); //to store the patient's location once fetched
+	const Location = useLocation(); //path location
 	const email = localStorage.getItem('userEmail');
 	const isDoctor = localStorage.getItem('isDoctor');
 	function getJwtToken() {
@@ -43,6 +44,13 @@ const PatientDashBoard = () => {
 			headers: headers,
 		});
 	};
+
+	useEffect(() => {
+		if (Location.pathname === '/patient-dashboard') {
+			setLocation(loc);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [Location.pathname]);
 
 	const handleLocationChange = async (event) => {
 		const changedlocation = event.target.value;
@@ -87,6 +95,7 @@ const PatientDashBoard = () => {
 					return;
 				}
 				setLocation(patientData.location);
+				setloc(patientData.location);
 				setIsLoading(false); // Set loading to false after location is set
 			};
 			fetchData();
@@ -105,8 +114,8 @@ const PatientDashBoard = () => {
 					<div className='flex flex-col justify-center w-full md:w-[calc(100%-24rem)]'>
 						<div className='pt-24 m-auto pb-1 border-red-600 flex justify-around items-center md:w-[calc(100%-24rem)]'>
 							{window.location.pathname !== '/patient-dashboard/pending' && (
-								<select id='countries' className='block m-2 md:min-w-48 rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 h-8' onChange={handleLocationChange}>
-									<option selected>Choose a location</option>
+								<select id='countries' className='block m-2 md:min-w-48 rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 h-8' onChange={handleLocationChange} value={location}>
+									<option value={loc}>{loc} ( Current location )</option>
 									<option value='Jaipur'>Jaipur</option>
 									<option value='Delhi'>Delhi</option>
 									<option value='Bangalore'>Bangalore</option>

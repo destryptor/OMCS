@@ -18,8 +18,9 @@ const doctorSchema = new mongoose.Schema(
 		],
 		patients: [
 			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'Patient',
+				email: { type: String, required: true },
+				status: { type: String, required: true },
+				symptoms: { type: String, default: '' },
 			},
 		],
 	},
