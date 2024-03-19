@@ -98,7 +98,7 @@ function PendingData({ status }) {
 			{isLoading ? (
 				<p>Loading...</p>
 			) : (
-				<div className={`flex flex-wrap max-w-screen-lg mx-auto px-5`}>
+				<div className={`flex flex-wrap max-w-screen-lg mx-auto px-5 w-full`}>
 					{isData ? (
 						Data.map((data, index) => <PendingCard key={index} name={data.name} age={data.age} symptoms={data.symptoms} location={data.location} status={status} />)
 					) : (

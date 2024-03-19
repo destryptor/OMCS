@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 export default function PendingCard(props) {
+
   const [showModal, setShowModal] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isPrescript, setIsPrescript] = useState(true);
@@ -601,4 +602,5 @@ export default function PendingCard(props) {
       </div>
     </>
   );
+
 }
