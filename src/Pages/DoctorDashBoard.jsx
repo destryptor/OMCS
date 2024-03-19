@@ -43,10 +43,11 @@ const DoctorDashBoard = () => {
 				<div className='flex flex-col justify-center w-full md:w-[calc(100%-24rem)]'>
 					<h2 class='pt-24 m-auto font-bold my-2 uppercase text-xl'>Pending Consultations</h2>
 					<PendingData status='consultation' />
-					<h2 class='pt-24 m-auto font-bold my-2 uppercase text-xl'>Booked Appointments</h2>
-					{/* <PendingData status='pending' /> */}
-					<h2 class='pt-24 m-auto font-bold my-2 uppercase text-xl'>Completed</h2>
-					{/* <PendingData status='pending' /> */}
+
+					<h2 class='pt-24 m-auto font-bold my-2'>Booked Appointments</h2>
+					 <PendingData status='appointment' /> 
+					<h2 class='pt-24 m-auto font-bold my-2'>Completed</h2>
+					<PendingData status='completed' />
 				</div>
 				<div className='hidden md:block fixed right-0 top-16'>
 					<DoctorProfile />
