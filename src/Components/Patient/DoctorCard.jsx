@@ -212,8 +212,8 @@ export default function DoctorCard(props) {
 												Clinic - <span className='text-gray-600 font-semibold text-sm'>{props.clinic}</span>
 											</div>
 										</div>
-										<div className='mt-2'>
-											<div className='text-md font-bold text-center md:text-left'>Please fill your symptoms-</div>
+										<div className=''>
+											<div className='text-md font-bold text-center md:text-left mb-2'>Please fill your symptoms-</div>
 											<textarea type='text' value={inputValue} onChange={handleInputChange} className='min-h-20 w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' placeholder='List your symptoms separated by commas' />
 										</div>
 									</div>

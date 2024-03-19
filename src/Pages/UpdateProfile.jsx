@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
 function UpdateProfile() {

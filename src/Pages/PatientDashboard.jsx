@@ -4,7 +4,9 @@ import PatientProfile from '../Components/Patient/PatientProfile';
 import DoctorData from '../Components/Patient/DoctorData';
 import toast, { Toaster } from 'react-hot-toast';
 import { Routes, Route, Link, Outlet } from 'react-router-dom';
-import ConsultData from '../Components/Patient/ConsultData';
+// import ConsultData from '../Components/Patient/ConsultData';
+import Consultations from '../Components/Patient/Consultations';
+
 
 const PatientDashBoard = () => {
 	const [location, setLocation] = useState();
@@ -109,7 +111,7 @@ const PatientDashBoard = () => {
 			{isLoading ? ( // Render loading state
 				<div class='m-auto font-bold text-96'>Loading...</div>
 			) : (
-				<div className='flex relative'>
+				<div className='flex relative px-10'>
 					{/*Map */}
 					<div className='flex flex-col justify-center w-full md:w-[calc(100%-24rem)]'>
 						<div className='pt-24 m-auto pb-1 border-red-600 flex justify-around items-center md:w-[calc(100%-24rem)]'>
@@ -133,11 +135,11 @@ const PatientDashBoard = () => {
 							)}
 						</div>
 						{/* Needs styling... */}
-						<h2 class='m-auto font-bold my-2'>{window.location.pathname === '/patient-dashboard/pending' ? 'Pending Consultations' : 'List of available doctors'}</h2>
+						<h2 class='m-auto font-bold my-2 text-xl uppercase'>{window.location.pathname === '/patient-dashboard/pending' ? 'Pending Consultations' : 'List of available doctors'}</h2>
 
 						<Routes>
 							<Route path='/' element={<DoctorData location={location} />} />
-							<Route path='/pending' element={<ConsultData />} />
+							<Route path='/pending' element={<Consultations />} />
 							<Route path='/patient-dashboard' element={<Outlet />} />
 						</Routes>
 					</div>
