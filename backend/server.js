@@ -7,6 +7,7 @@ const doctorRouter = require('./Database/api/doctor');
 const patientRouter = require('./Database/api/patient');
 const appointmentRouter = require('./Database/api/appointment');
 const prescriptionRouter = require('./Database/api/prescription');
+const emailRouter = require('./Database/api/email');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use('/doctor', doctorRouter);
 app.use('/patient', patientRouter);
 app.use('/appointment', appointmentRouter);
 app.use('/prescription', prescriptionRouter);
+app.use('/email', emailRouter);
 
 app.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
