@@ -75,6 +75,7 @@ function PendingData({ status }) {
 								return toast.error('Internal server error');
 							}
 							const patientData = await patientResponse.json();
+							console.log(patientData);
 							const tempData = {
 								name: patientData.name,
 								age: patientData.age,
@@ -82,6 +83,7 @@ function PendingData({ status }) {
 								location: patientData.location,
 								email: patientData.email,
 							};
+							console.log(tempData);
 							setData((prevData) => [...prevData, tempData]);
 							setIsData(true);
 						}
@@ -107,7 +109,9 @@ function PendingData({ status }) {
 								symptoms: patient.symptoms,
 								location: patientData.location,
 								email: patientData.email,
+								id:patient.id,
 							};
+							console.log(tempData);
 							setData((prevData) => [...prevData, tempData]);
 							setIsData(true);
 						}
@@ -142,7 +146,7 @@ function PendingData({ status }) {
 						}
 						const patientData = await patientResponse.json();
 						const symptoms = patientData.doctor.map((doctor) => {
-							if (doctor.email === doctorEmail) {
+							if (doctor.email === doctorEmail && doctor.status==='appointment') {
 								return doctor.symptoms;
 							}
 						});
@@ -154,7 +158,9 @@ function PendingData({ status }) {
 							email: patientData.email,
 							date: appointment.date.split('T')[0],
 							time: appointment.time,
+							id:appointment._id,
 						};
+						console.log(tempData);
 						setData((prevData) => [...prevData, tempData]);
 						setIsData(true);
 					});
