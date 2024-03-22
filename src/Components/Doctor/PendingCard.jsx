@@ -250,6 +250,7 @@ export default function PendingCard({ index, data, status }) {
 				throw new Error('Doctor not found for the patient in appointment list');
 			}
 			patient_to_upd.doctor[doct_ind].status = 'completed';
+			patient_to_upd.doctor[doct_ind].completionDate = new Date().toISOString().split('T')[0];
 
 			try {
 				const updateResponse = await authFetch('http://localhost:6969/patient/updatePatient', {
@@ -285,6 +286,7 @@ export default function PendingCard({ index, data, status }) {
 						throw new Error('Doctor not found for the patient');
 					}
 					doc_data_to_update.patients[pait_ind].status = 'completed';
+					doc_data_to_update.patients[pait_ind].completionDate = new Date().toISOString().split('T')[0];
 					const updateDoctorResponse = await authFetch('http://localhost:6969/doctor/updateDoctor', {
 						method: 'POST',
 						headers: {
@@ -324,6 +326,7 @@ export default function PendingCard({ index, data, status }) {
 								context: 'completion',
 								receiver_name: patient_to_upd.name,
 								sender_name: doc_data_to_update.name,
+								completion_id: patient_to_upd.doctor[doct_ind].id,
 							}),
 						});
 						if (emailResponse.ok) {
@@ -387,6 +390,14 @@ export default function PendingCard({ index, data, status }) {
 			if (doct_ind === -1) {
 				throw new Error('Doctor not found for the patient in appointment list');
 			}
+			const completeDate = patient_to_upd.doctor[doct_ind].completionDate;
+			const currDate = new Date().toISOString().split('T')[0];
+			const oneWeekAfter = new Date(new Date(completeDate).getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+			if (currDate < oneWeekAfter) {
+				return toast.error('Consultation cannot be deleted within 7 days of completion');
+			}
+
 			patient_to_upd.doctor.splice(doct_ind, 1);
 
 			try {
@@ -506,6 +517,7 @@ export default function PendingCard({ index, data, status }) {
 					throw new Error('Doctor not found for the patient');
 				}
 				patient_to_upd.doctor[doct_ind].status = 'completed';
+				patient_to_upd.doctor[doct_ind].completionDate = new Date().toISOString().split('T')[0];
 				patient_to_upd.doctor[doct_ind].id = prescrip_data._id;
 
 				try {
@@ -520,10 +532,6 @@ export default function PendingCard({ index, data, status }) {
 					if (updateResponse.ok) {
 						const updatedPatient = await updateResponse.json();
 						console.log('Patient updated successfully:', updatedPatient);
-						toast.success('Consultation request sent successfully');
-						setTimeout(() => {
-							handleCloseModal();
-						}, 2000);
 					} else {
 						const errorMessage = await updateResponse.text();
 						console.error('Error updating patient:', errorMessage);
@@ -544,6 +552,7 @@ export default function PendingCard({ index, data, status }) {
 						}
 						doc_data_to_update.patients[pait_ind].status = 'completed';
 						doc_data_to_update.patients[pait_ind].id = prescrip_data._id;
+						doc_data_to_update.patients[pait_ind].completionDate = new Date().toISOString().split('T')[0];
 						const updateDoctorResponse = await authFetch('http://localhost:6969/doctor/updateDoctor', {
 							method: 'POST',
 							headers: {
@@ -574,6 +583,7 @@ export default function PendingCard({ index, data, status }) {
 									receiver_name: patient_to_upd.name,
 									sender_name: doc_data_to_update.name,
 									prescription: cont,
+									completion_id: patient_to_upd.doctor[doct_ind].id,
 								}),
 							});
 							if (emailResponse.ok) {
@@ -859,14 +869,14 @@ export default function PendingCard({ index, data, status }) {
 											<div className='text-md font-bold text-left'>
 												Age - <span className='text-gray-600 font-semibold text-sm '>{data.age}</span>
 											</div>
-											<div className='text-md font-bold text-center md:text-left'>
+											<div className='text-md font-bold md:text-left'>
 												Symptoms - <span className='text-gray-600 font-semibold text-sm'>{data.symptoms}</span>
 											</div>
 										</div>
 										{isReject && (
 											<>
 												<div className='mt-2'>
-													<div className='text-md font-bold text-center md:text-left'>State your reasons for rejection:</div>
+													<div className='text-md font-bold md:text-left'>State your reasons for rejection:</div>
 													<textarea type='text' value={reject_reason} onChange={handlerejectreason} className='min-h-20 w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' placeholder='Reasons for rejection' />
 												</div>
 												<div className='flex justify-center bg-gray-50 px-4 py-3 sm:px-6'>
@@ -879,7 +889,7 @@ export default function PendingCard({ index, data, status }) {
 										{isPrescript && (
 											<>
 												<div className='mt-2'>
-													<div className='text-md font-bold text-center md:text-left'>Prescription-</div>
+													<div className='text-md font-bold md:text-left'>Prescription-</div>
 													<textarea type='text' value={inputValue} onChange={handleInputChange} className='min-h-20 w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' placeholder='Prescibe the medicines here' />
 												</div>
 												<div className='flex justify-center bg-gray-50 px-4 py-3 sm:px-6'>
@@ -892,9 +902,9 @@ export default function PendingCard({ index, data, status }) {
 										{!isPrescript && !isReject && (
 											<>
 												<div className='mt-2'>
-													<div className='text-md font-bold text-center md:text-left'>Appointment date</div>
+													<div className='text-md font-bold md:text-left'>Appointment date</div>
 													<input id='date' type='date' className=' w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' />
-													<div className='text-md font-bold text-center md:text-left'>Appointment time</div>
+													<div className='text-md font-bold md:text-left'>Appointment time</div>
 													<input id='time' type='time' className=' w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' />
 												</div>
 												<div className='flex justify-center bg-gray-50 px-4 py-3 sm:px-6'>
@@ -917,7 +927,7 @@ export default function PendingCard({ index, data, status }) {
 						<h4 className='text-lg font-bold text-left mx-2'>{data.name}</h4>
 						<div className='flex'>
 							<div className='mx-2'>
-								<div className='text-md font-bold text-center md:text-left'>
+								<div className='text-md font-bold md:text-left'>
 									Age - <span className='text-gray-600 font-semibold text-sm'>{data.age}</span>
 								</div>
 								<div className='text-md font-bold text-left'>

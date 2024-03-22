@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
 function UpdateProfile() {
@@ -88,11 +88,18 @@ function UpdateProfile() {
 			if (isDoctor) {
 				const _id = doctor._id;
 				const name = document.getElementById('name').value;
+				if (name === '') return toast.error('Name cannot be empty');
 				const email = document.getElementById('email').value;
+				if (email === '') return toast.error('Email cannot be empty');
+				const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+				if (!emailRegex.test(email)) return toast.error('Please enter a valid email address');
 				const specialisation = document.getElementById('specialisation').value;
+				if (specialisation === '') return toast.error('Specialisation cannot be empty');
 				const certification = document.getElementById('certification').value;
 				const clinic = document.getElementById('clinic').value;
+				if (clinic === '') return toast.error('Clinic name cannot be empty');
 				const location = document.getElementById('countries').value;
+				if (location === 'Choose a location') return toast.error('Please select a location');
 				const workingHours = [
 					{
 						day: 'Monday',
@@ -259,7 +266,7 @@ function UpdateProfile() {
 									Specialisation
 								</label>
 								<div className='mt-1'>
-									<input id='specialisation' name='specialisation' type='specialisation' defaultValue={doctor.specialisation} autoComplete='specialisation' required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6' />
+									<input id='specialisation' name='specialisation' type='specialisation' defaultValue={doctor.specialisation} autoComplete='specialisation' required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6' placeholder='Specialisations separated by commas, if more than one.' />
 								</div>
 							</div>
 							<div>
