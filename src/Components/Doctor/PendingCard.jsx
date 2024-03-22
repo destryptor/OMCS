@@ -5,6 +5,7 @@ export default function PendingCard({ index, data, status }) {
 	const [inputValue, setInputValue] = useState('');
 	const [isPrescript, setIsPrescript] = useState(true);
 	const [isReject, setIsReject] = useState(false);
+	const [isFeedback, setIsFeedback] = useState(false);
 	const [reject_reason, Setreject_reason] = useState('');
 	function getJwtToken() {
 		const cookies = document.cookie.split(';').map((cookie) => cookie.trim());
@@ -47,6 +48,17 @@ export default function PendingCard({ index, data, status }) {
 		setShowModal(true);
 		setIsPrescript(false);
 		setIsReject(true);
+		setIsFeedback(false);
+	};
+
+	const handlefeedback = () => {
+		if (data.feedback === '' || !data.feedback) {
+			return toast.error('No feedback from the patient yet');
+		}
+		setShowModal(true);
+		setIsPrescript(false);
+		setIsReject(false);
+		setIsFeedback(true);
 	};
 
 	const handleOpenapppointModal = async () => {
@@ -390,13 +402,13 @@ export default function PendingCard({ index, data, status }) {
 			if (doct_ind === -1) {
 				throw new Error('Doctor not found for the patient in appointment list');
 			}
-			const completeDate = patient_to_upd.doctor[doct_ind].completionDate;
-			const currDate = new Date().toISOString().split('T')[0];
-			const oneWeekAfter = new Date(new Date(completeDate).getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+			// const completeDate = patient_to_upd.doctor[doct_ind].completionDate;
+			// const currDate = new Date().toISOString().split('T')[0];
+			// const oneWeekAfter = new Date(new Date(completeDate).getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
-			if (currDate < oneWeekAfter) {
-				return toast.error('Consultation cannot be deleted within 7 days of completion');
-			}
+			// if (currDate < oneWeekAfter) {
+			// 	return toast.error('Consultation cannot be deleted within 7 days of completion');
+			// }
 
 			patient_to_upd.doctor.splice(doct_ind, 1);
 
@@ -838,6 +850,71 @@ export default function PendingCard({ index, data, status }) {
 		}
 	};
 
+	const handlereplysubmit = async () => {
+		if (new Date(new Date(data.completed).getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] < new Date().toISOString().split('T')[0]) {
+			return toast.error('7 days have passed since the completion of the appointment. Please click remove to delete the consultation');
+		}
+		const patientEmail = data.email;
+		const feedback = document.getElementById('reply-text').value;
+		if (feedback === '') return toast.error('Feedback cannot be empty');
+		try {
+			const response = await authFetch('http://localhost:6969/patient/getByEmail', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ email: patientEmail }),
+			});
+			if (response.ok) {
+				console.log('Patient obtained successfully:', response);
+			} else {
+				const errorMessage = await response.text();
+				console.error('Error obtaining patient:', errorMessage);
+				toast.error('Internal server error');
+				return;
+			}
+
+			const patient_to_upd = await response.json();
+			const doct_ind = patient_to_upd.doctor.findIndex((doctor) => doctor.id === data.id);
+			if (doct_ind === -1) {
+				throw new Error('Doctor not found for the patient in appointment list');
+			}
+			patient_to_upd.doctor[doct_ind].feedback = feedback;
+
+			try {
+				const updateResponse = await authFetch('http://localhost:6969/patient/updatePatient', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(patient_to_upd),
+				});
+
+				if (updateResponse.ok) {
+					const updatedPatient = await updateResponse.json();
+					console.log('Patient updated successfully:', updatedPatient);
+					toast.success('Reply sent successfully');
+					setTimeout(() => {
+						handleCloseModal();
+						setInputValue('');
+					}, 2000);
+				} else {
+					const errorMessage = await updateResponse.text();
+					console.error('Error updating patient:', errorMessage);
+					toast.error('Internal server error');
+				}
+			} catch (error) {
+				console.error(error);
+				toast.error('Internal server error');
+				return;
+			}
+		} catch (error) {
+			console.error(error);
+			toast.error('Internal server error');
+			return;
+		}
+	};
+
 	return (
 		<>
 			<Toaster />
@@ -854,7 +931,10 @@ export default function PendingCard({ index, data, status }) {
 									<div className='mt-3 text-center sm:mt-0  sm:text-left'>
 										<div className='flex flex-row justify-center'>
 											<h1 className='text-2xl leading-6 font-medium text-gray-900' id='modal-title'>
-												Online prescription
+												{isReject && 'Reject Consultation'}
+												{isPrescript && 'Online Prescription'}
+												{isFeedback && 'Reply to Feedback'}
+												{!isPrescript && !isReject && !isFeedback && 'Book Appointment'}
 											</h1>
 											<div className='absolute right-5'>
 												<button onClick={handleCloseModal} className=' hover:bg-gray-100 transition-all rounded' style={{ right: '0' }}>
@@ -899,7 +979,23 @@ export default function PendingCard({ index, data, status }) {
 												</div>
 											</>
 										)}
-										{!isPrescript && !isReject && (
+										{isFeedback && (
+											<>
+												<div className='mt-2'>
+													<div className='text-md font-bold md:text-left mb-2'>
+														Feedback from patient- <span className='text-gray-600 font-semibold text-sm '>{data.feedback}</span>
+													</div>
+													<div className='text-md font-bold md:text-left'>Reply:</div>
+													<textarea type='text' id='reply-text' className='min-h-20 w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' placeholder='Your Reply' />
+												</div>
+												<div className='flex justify-center bg-gray-50 px-4 py-3 sm:px-6'>
+													<button className=' inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm' onClick={handlereplysubmit}>
+														Submit
+													</button>
+												</div>
+											</>
+										)}
+										{!isPrescript && !isReject && !isFeedback && (
 											<>
 												<div className='mt-2'>
 													<div className='text-md font-bold md:text-left'>Appointment date</div>
@@ -979,9 +1075,14 @@ export default function PendingCard({ index, data, status }) {
 							Completed
 						</button>
 					) : (
-						<button className='m-2 flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500' onClick={handledelete}>
-							Remove
-						</button>
+						<>
+							<button className='m-2 flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500' onClick={handlefeedback}>
+								Feedback from Patient
+							</button>
+							<button className='m-2 flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500' onClick={handledelete}>
+								Remove
+							</button>
+						</>
 					)}
 				</div>
 			</div>

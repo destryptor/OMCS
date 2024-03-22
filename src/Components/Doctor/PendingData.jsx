@@ -21,27 +21,6 @@ function PendingData({ status }) {
 
 	const jwtToken = getJwtToken();
 
-	const authFetch = async (url, options = {}) => {
-		const token = getJwtToken();
-
-		const headers = {
-			'Content-Type': 'application/json',
-		};
-
-		if (token) {
-			headers['Authorization'] = `Bearer ${token}`;
-		}
-
-		if (options.headers) {
-			Object.assign(headers, options.headers);
-		}
-
-		return await fetch(url, {
-			...options,
-			headers: headers,
-		});
-	};
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -110,6 +89,8 @@ function PendingData({ status }) {
 								location: patientData.location,
 								email: patientData.email,
 								id: patient.id,
+								feedback: patient.feedback,
+								completed: patient.completionDate,
 							};
 							console.log(tempData);
 							setData((prevData) => [...prevData, tempData]);
