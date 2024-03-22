@@ -68,11 +68,11 @@ function DoctorData({ location }) {
 				setData(doctorsData);
 				let specs = [];
 				for (const doctor of doctorsData) {
-					const specialisations = doctor.specialisation.split(',');
+					const specialisations = doctor.specialisation.split(',').map((spec) => spec.trim());
 					console.log(specialisations);
 					for (const spec of specialisations) {
 						console.log(specs);
-						if (!specs.includes(spec.trim())) {
+						if (!specs.includes(spec)) {
 							specs.push(spec);
 						}
 					}
@@ -97,7 +97,7 @@ function DoctorData({ location }) {
 						<div key={index} className='flex flex-col justify-center space-y-4 md:space-y-0 md:space-x-6 w-full'>
 							<h4 className='text-lg font-bold text-left mx-auto text-red-700'>{spec}</h4>
 							{Data.map((data, index) => {
-								const specialisations = data.specialisation.split(',');
+								const specialisations = data.specialisation.split(',').map((spec) => spec.trim());
 								if (specialisations.includes(spec)) {
 									return (
 										<div>
