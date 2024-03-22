@@ -208,13 +208,13 @@ export default function DoctorCard(props) {
 											<div className='text-md font-bold text-left'>
 												Specialisation - <span className='text-gray-600 font-semibold text-sm '>{props.specialisation}</span>
 											</div>
-											<div className='text-md font-bold text-center md:text-left'>
+											<div className='text-md font-bold md:text-left'>
 												Clinic - <span className='text-gray-600 font-semibold text-sm'>{props.clinic}</span>
 											</div>
-										</div>
-										<div className=''>
-											<div className='text-md font-bold text-center md:text-left mb-2'>Please fill your symptoms-</div>
-											<textarea type='text' value={inputValue} onChange={handleInputChange} className='min-h-20 w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' placeholder='List your symptoms separated by commas' />
+											<div>
+												<div className='text-md font-bold md:text-left mb-2'>Please fill your symptoms-</div>
+												<textarea type='text' value={inputValue} onChange={handleInputChange} className='min-h-20 w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' placeholder='List your symptoms separated by commas' />
+											</div>
 										</div>
 									</div>
 								</div>
@@ -237,7 +237,7 @@ export default function DoctorCard(props) {
 								<div className='text-md font-bold text-left'>
 									Specialisation - <span className='text-gray-600 font-semibold text-sm '>{props.specialisation}</span>
 								</div>
-								<div className='text-md font-bold text-center md:text-left'>
+								<div className='text-md font-bold md:text-left'>
 									Clinic - <span className='text-gray-600 font-semibold text-sm'>{props.clinic}</span>
 								</div>
 							</div>
