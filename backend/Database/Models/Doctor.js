@@ -26,6 +26,7 @@ const doctorSchema = new mongoose.Schema(
 					required: true,
 				},
 				completionDate: { type: Date },
+				feedback: { type: String, default: '' },
 			},
 		],
 	},

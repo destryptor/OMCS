@@ -95,7 +95,8 @@ const completionMail = (to, from, receiver_name, sender_name) => {
 		to: to,
 		subject: 'Consultation Completed',
 		text: `Dear ${receiver_name},\n\nYour consultation with Dr. ${sender_name} has been completed. Hope you have received the proper treatment. If you have any querries, doubts or problems, please contact Dr. ${sender_name} through their email address: ${from} for the NEXT 7 DAYS.\n\nRegards,\nOMCS`,
-		html: `<p>Dear ${receiver_name},</p><br><p>Your consultation with Dr. ${sender_name} has been completed. Hope you have received the proper treatment. If you have any querries, doubts or problems, please contact Dr. ${sender_name} through their email address: ${from} for the <b>NEXT 7 DAYS</b>.</p><br><p>Regards,</p><p>OMCS</p>`,
+		html: `<p>Dear ${receiver_name},</p><br><p>Your consultation with Dr. ${sender_name} has been completed. Hope you have received the proper treatment. If you have any querries, doubts or problems, please go to 'Your Consultations' on the website and submit your feedback through the 'Feedback' option in the Completed Consulations section.</p> <p>
+		Please note, this will be valid for the <b>NEXT 7 DAYS</b> only.</p><br><p>Regards,</p><p>OMCS</p>`,
 	};
 
 	transporter.sendMail(mailOptions, (error, info) => {
@@ -118,6 +119,7 @@ emailRouter.post('/sendMail', authenticateToken, async (req, res) => {
 		}
 		if (context === 'prescription') {
 			prescriptionMail(to, receiver_name, sender_name, prescription);
+			completionMail(to, from, receiver_name, sender_name);
 		}
 		if (context === 'completion') {
 			completionMail(to, from, receiver_name, sender_name);
