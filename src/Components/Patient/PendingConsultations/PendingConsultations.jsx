@@ -1,11 +1,12 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import TableCard from './CardforPending';
 import toast, { Toaster } from 'react-hot-toast';
-import ConsultCard from './ConsultCard';
+import { useState, useEffect } from 'react';
 
-function ConsultData() {
+function PendingData() {
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
+	const [isData, setIsData] = useState(false);
 	const email = localStorage.getItem('userEmail');
 
 	function getJwtToken() {
@@ -39,10 +40,12 @@ function ConsultData() {
 					toast.error('Internal server error');
 				}
 				const patient = await response.json();
-				let DoctorData = [];
-				const doctorsWithSymptoms = await Promise.all(
-					patient.doctor.map(async (doctor) => {
-						if (doctor.status !== 'consultation') return null;
+				let srno = 0;
+				patient.doctor.map(async (doctor) => {
+					if (doctor.status !== 'consultation') {
+						return null;
+					}
+					try {
 						const response = await fetch('http://localhost:6969/doctor/getByEmail', {
 							method: 'POST',
 							headers: {
@@ -63,20 +66,25 @@ function ConsultData() {
 						}
 
 						const doctorData = await response.json();
-						return {
-							name: doctorData.name,
-							specialisation: doctorData.specialisation,
-							clinic: doctorData.clinic,
-							location: doctorData.location,
-							symptoms: doctor.symptoms,
-						};
-					})
-				);
-
-				const filteredDoctorsWithSymptoms = doctorsWithSymptoms.filter((doctor) => doctor !== null);
-
-				DoctorData.push(...filteredDoctorsWithSymptoms);
-				setData(DoctorData);
+						srno++;
+						setData((prevData) => [
+							...prevData,
+							{
+								sr: srno,
+								name: doctorData.name,
+								specialisation: doctorData.specialisation,
+								clinic: doctorData.clinic,
+								location: doctorData.location,
+								symptoms: doctor.symptoms,
+							},
+						]);
+						console.log(srno);
+						setIsData(true);
+					} catch (error) {
+						console.error(error);
+						toast.error('Internal server error');
+					}
+				});
 			} catch (error) {
 				console.error(error);
 				toast.error('Internal server error');
@@ -90,11 +98,49 @@ function ConsultData() {
 		<>
 			<Toaster />
 			{isLoading ? (
-				<p>Loading...</p>
+				<div className='flex justify-center items-center h-screen'>Loading...</div>
 			) : (
-				<div className={`flex flex-wrap max-w-screen-lg mx-auto px-5 w-full`}>
-					{Data.length ? (
-						Data.map((data, index) => <ConsultCard key={index} name={data.name} specialisation={data.specialisation} clinic={data.clinic} location={data.location} symptoms={data.symptoms} />)
+				<>
+					{isData ? (
+						<>
+							<div class='flex flex-col overflow-x-auto'>
+								<div class='sm:-mx-6 lg:-mx-8'>
+									<div class='inline-block min-w-full py-2 sm:px-6 lg:px-8 '>
+										<div class='overflow-x-auto'>
+											<table class='min-w-full text-left text-sm font-light'>
+												<thead class='border-b text-white text-base font-medium dark:border-neutral-500 bg-green-600'>
+													<tr>
+														<th scope='col' class='px-6 py-4'>
+															#
+														</th>
+														<th scope='col' class='px-6 py-4'>
+															Name
+														</th>
+														<th scope='col' class='px-6 py-4'>
+															Specialisation
+														</th>
+														<th scope='col' class='px-6 py-4'>
+															Clinic
+														</th>
+														<th scope='col' class='px-6 py-4'>
+															Location
+														</th>
+														<th scope='col' class='px-6 py-4'>
+															Symptoms
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													{Data.map((data, index) => (
+														<TableCard key={index} sr={data.sr} name={data.name} specialisation={data.specialisation} clinic={data.clinic} location={data.location} symptoms={data.symptoms} />
+													))}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</>
 					) : (
 						<div className='p-5 m-2 border-solid border-2 border-red-600 rounded-lg shadow-md bg-stone-100 hover:scale-105 transition-all m-auto'>
 							<div className='flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row'>
@@ -104,10 +150,10 @@ function ConsultData() {
 							</div>
 						</div>
 					)}
-				</div>
+				</>
 			)}
 		</>
 	);
 }
 
-export default ConsultData;
+export default PendingData;
