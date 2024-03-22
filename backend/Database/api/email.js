@@ -40,8 +40,8 @@ const rejectionMail = (to, receiver_name, sender_name, reason) => {
 		from: process.env.EMAIL,
 		to: to,
 		subject: 'Consultation Rejection',
-		text: `Dear ${receiver_name},\n\nYour consultation with Dr. ${sender_name} has been rejected. \nReason: ${reason}\nPlease book consultations in a proper format please.\n\nRegards,\nOMCS`,
-		html: `<p>Dear ${receiver_name},</p><br><p>Your consultation with Dr. ${sender_name} has been rejected.</p><p><b>Reason</b>: ${reason}.</p><p>Please book consultations in a proper format next time.</p><br><p>Regards,</p><p>OMCS</p>`,
+		text: `Dear ${receiver_name},\n\nYour consultation with Dr. ${sender_name} has been rejected. \nReason: ${reason}\n\nRegards,\nOMCS`,
+		html: `<p>Dear ${receiver_name},</p><br><p>Your consultation with Dr. ${sender_name} has been rejected.</p><p><b>Reason</b>: ${reason}.</p><br><p>Regards,</p><p>OMCS</p>`,
 	};
 
 	transporter.sendMail(mailOptions, (error, info) => {

@@ -7,7 +7,6 @@ import { Routes, Route, Link, Outlet } from 'react-router-dom';
 // import ConsultData from '../Components/Patient/ConsultData';
 import Consultations from '../Components/Patient/Consultations';
 
-
 const PatientDashBoard = () => {
 	const [location, setLocation] = useState();
 	const [isLoading, setIsLoading] = useState(true);
@@ -109,7 +108,7 @@ const PatientDashBoard = () => {
 		<>
 			<Toaster />
 			{isLoading ? ( // Render loading state
-				<div class='m-auto font-bold text-96'>Loading...</div>
+				<div className='m-auto font-bold text-96'>Loading...</div>
 			) : (
 				<div className='flex relative px-10'>
 					{/*Map */}
@@ -124,22 +123,22 @@ const PatientDashBoard = () => {
 									<option value='Kharagpur'>Kharagpur</option>
 								</select>
 							)}
-							{window.location.pathname === '/patient-dashboard/pending' ? (
+							{window.location.pathname === '/patient-dashboard/consultations' ? (
 								<Link to='/patient-dashboard' className='m-2 flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'>
-									All Doctors - Here
+									All Doctors
 								</Link>
 							) : (
-								<Link to='/patient-dashboard/pending' className='m-2 flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'>
-									Pending Consultations - Here
+								<Link to='/patient-dashboard/consultations' className='m-2 flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'>
+									Pending Consultations
 								</Link>
 							)}
 						</div>
 						{/* Needs styling... */}
-						<h2 class='m-auto font-bold my-2 text-xl uppercase'>{window.location.pathname === '/patient-dashboard/pending' ? 'Pending Consultations' : 'List of available doctors'}</h2>
+						<h2 className='m-auto font-bold my-2 text-xl uppercase'>{window.location.pathname === '/patient-dashboard/pending' ? 'Pending Consultations' : 'List of available doctors'}</h2>
 
 						<Routes>
 							<Route path='/' element={<DoctorData location={location} />} />
-							<Route path='/pending' element={<Consultations />} />
+							<Route path='/consultations' element={<Consultations />} />
 							<Route path='/patient-dashboard' element={<Outlet />} />
 						</Routes>
 					</div>

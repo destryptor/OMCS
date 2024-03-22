@@ -43,8 +43,11 @@ applicationRouter.post('/getAppointment', authenticateToken, async (req, res) =>
 
 applicationRouter.post('/getAppointmentsByPatient', authenticateToken, async (req, res) => {
 	try {
-		const { patient } = req.body;
-		const appointments = await Appointment.find({ patient });
+		const { email } = req.body;
+		const patientObj = {
+			email: email,
+		};
+		const appointments = await Appointment.find({ patient: patientObj });
 
 		if (appointments.length === 0) {
 			return res.status(404).json({ message: 'No appointments found' });
