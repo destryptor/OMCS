@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 function DoctorData({ location }) {
-	
 	const [Data, setData] = useState([]);
+	const [specialisations, setSpecialisations] = useState([]);
 
 	function getJwtToken() {
 		const cookies = document.cookie.split(';').map((cookie) => cookie.trim());
@@ -18,34 +18,18 @@ function DoctorData({ location }) {
 		return null;
 	}
 
-	const authFetch = async (url, options = {}) => {
-		const token = getJwtToken();
-
-		const headers = {
-			'Content-Type': 'application/json',
-		};
-
-		if (token) {
-			headers['Authorization'] = `Bearer ${token}`;
-		}
-
-		if (options.headers) {
-			Object.assign(headers, options.headers);
-		}
-
-		return await fetch(url, {
-			...options,
-			headers: headers,
-		});
-	};
-
 	useEffect(() => {
+		if (!getJwtToken()) {
+			toast.error('Session expired. Please login again');
+			return window.location.href('/patient-login');
+		}
 		const fetchData = async () => {
 			try {
-				const doctorResponse = await authFetch('http://localhost:6969/doctor/getByLocation', {
+				const doctorResponse = await fetch('http://localhost:6969/doctor/getByLocation', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
+						Authorization: `Bearer ${getJwtToken()}`,
 					},
 					body: JSON.stringify({ location }),
 				});
@@ -84,8 +68,20 @@ function DoctorData({ location }) {
 					}
 					return 0;
 				});
-				
+
 				setData(doctorsData);
+				let specs = [];
+				for (const doctor of doctorsData) {
+					const specialisations = doctor.specialisation.split(',').map((spec) => spec.trim());
+					console.log(specialisations);
+					for (const spec of specialisations) {
+						console.log(specs);
+						if (!specs.includes(spec)) {
+							specs.push(spec);
+						}
+					}
+				}
+				setSpecialisations(specs);
 			} catch (error) {
 				console.log(error);
 			}
@@ -94,13 +90,29 @@ function DoctorData({ location }) {
 		fetchData();
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location]);
+	console.log(specialisations);
 	return (
 		<>
 			<Toaster />
 
 			<div className={`flex flex-wrap max-w-screen-lg m-auto   px-5 w-full`}>
-				{Data.length>0 ? (
-					Data.map((data, index) => <DoctorCard key={index} name={data.name} specialisation={data.specialisation} clinic={data.clinic} workingHours={data.workingHours} location={data.location} email={data.email} doctor_id={data._id} />)
+				{Data.length > 0 ? (
+					specialisations.map((spec, index) => (
+						<div key={index} className='flex flex-col justify-center space-y-4 md:space-y-0 md:space-x-6 w-full'>
+							<h4 className='text-lg font-bold text-left mx-auto text-red-700'>{spec}</h4>
+							{Data.map((data, index) => {
+								const specialisations = data.specialisation.split(',').map((spec) => spec.trim());
+								if (specialisations.includes(spec)) {
+									return (
+										<div>
+											<DoctorCard key={index} name={data.name} specialisation={data.specialisation} clinic={data.clinic} workingHours={data.workingHours} location={data.location} email={data.email} doctor_id={data._id} />
+										</div>
+									);
+								}
+								return null;
+							})}
+						</div>
+					))
 				) : (
 					<div className='p-5 m-2 border-solid border-2 border-red-600  rounded-lg shadow-md bg-stone-100 hover:scale-105 transition-all m-auto'>
 						<div className='flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row'>

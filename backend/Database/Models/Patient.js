@@ -13,6 +13,12 @@ const patientSchema = new mongoose.Schema(
 				email: { type: String, required: true },
 				status: { type: String, default: 'Pending' },
 				symptoms: { type: String, default: '' },
+				id: {
+					type: mongoose.Schema.Types.ObjectId,
+					required: true,
+				},
+				completionDate: { type: Date },
+				feedback: { type: String, default: '' },
 			},
 		],
 	},

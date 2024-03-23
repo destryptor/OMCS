@@ -26,8 +26,9 @@ function authenticateToken(req, res, next) {
 
 applicationRouter.post('/getAppointment', authenticateToken, async (req, res) => {
 	try {
-		const { id } = req.body;
-		const appointment = await Appointment.findById(id);
+		const patientEmail = req.body.patientEmail;
+		const doctorEmail = req.body.doctorEmail;
+		const appointment = await Appointment.findOne({ patient: patientEmail, doctor: doctorEmail });
 
 		if (!appointment) {
 			return res.status(404).json({ message: 'Appointment not found' });
@@ -42,8 +43,11 @@ applicationRouter.post('/getAppointment', authenticateToken, async (req, res) =>
 
 applicationRouter.post('/getAppointmentsByPatient', authenticateToken, async (req, res) => {
 	try {
-		const { patient } = req.body;
-		const appointments = await Appointment.find({ patient });
+		const { email } = req.body;
+		const patientObj = {
+			email: email,
+		};
+		const appointments = await Appointment.find({ patient: patientObj });
 
 		if (appointments.length === 0) {
 			return res.status(404).json({ message: 'No appointments found' });
@@ -64,7 +68,6 @@ applicationRouter.post('/getAppointmentsByDoctor', authenticateToken, async (req
 		if (appointments.length === 0) {
 			return res.status(404).json({ message: 'No appointments found' });
 		}
-
 		return res.status(200).json(appointments);
 	} catch (error) {
 		console.error(error);

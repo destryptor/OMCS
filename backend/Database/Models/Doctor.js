@@ -21,6 +21,12 @@ const doctorSchema = new mongoose.Schema(
 				email: { type: String, required: true },
 				status: { type: String, required: true },
 				symptoms: { type: String, default: '' },
+				id: {
+					type: mongoose.Schema.Types.ObjectId,
+					required: true,
+				},
+				completionDate: { type: Date },
+				feedback: { type: String, default: '' },
 			},
 		],
 	},

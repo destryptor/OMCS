@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
 function UpdateProfile() {
@@ -88,11 +88,14 @@ function UpdateProfile() {
 			if (isDoctor) {
 				const _id = doctor._id;
 				const name = document.getElementById('name').value;
-				const email = document.getElementById('email').value;
+				if (name === '') return toast.error('Name cannot be empty');
 				const specialisation = document.getElementById('specialisation').value;
+				if (specialisation === '') return toast.error('Specialisation cannot be empty');
 				const certification = document.getElementById('certification').value;
 				const clinic = document.getElementById('clinic').value;
+				if (clinic === '') return toast.error('Clinic name cannot be empty');
 				const location = document.getElementById('countries').value;
+				if (location === 'Choose a location') return toast.error('Please select a location');
 				const workingHours = [
 					{
 						day: 'Monday',
@@ -191,9 +194,11 @@ function UpdateProfile() {
 			} else {
 				const _id = patient._id;
 				const name = document.getElementById('name').value;
-				const email = document.getElementById('email').value;
+				if (name === '') return toast.error('Name cannot be empty');
 				const age = document.getElementById('age').value;
+				if (age === '') return toast.error('Age cannot be empty');
 				const location = document.getElementById('countries').value;
+				if (location === 'Choose a location') return toast.error('Please select a location');
 
 				const updatedPatient = {
 					_id,
@@ -247,19 +252,11 @@ function UpdateProfile() {
 								</div>
 							</div>
 							<div>
-								<label htmlFor='email' className='block text-sm font-medium leading-6 text-gray-900'>
-									Email address
-								</label>
-								<div className='mt-1'>
-									<input id='email' name='email' type='email' defaultValue={doctor.email} autoComplete='email' required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6' />
-								</div>
-							</div>
-							<div>
 								<label htmlFor='specialisation' className='block text-sm font-medium leading-6 text-gray-900'>
 									Specialisation
 								</label>
 								<div className='mt-1'>
-									<input id='specialisation' name='specialisation' type='specialisation' defaultValue={doctor.specialisation} autoComplete='specialisation' required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6' />
+									<input id='specialisation' name='specialisation' type='specialisation' defaultValue={doctor.specialisation} autoComplete='specialisation' required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6' placeholder='Specialisations separated by commas, if more than one.' />
 								</div>
 							</div>
 							<div>
@@ -365,14 +362,6 @@ function UpdateProfile() {
 								</label>
 								<div className='mt-1'>
 									<input id='name' name='name' defaultValue={patient.name} type='name' autoComplete='name' required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6' />
-								</div>
-							</div>
-							<div>
-								<label htmlFor='email' className='block text-sm font-medium leading-6 text-gray-900'>
-									Email address
-								</label>
-								<div className='mt-1'>
-									<input id='email' name='email' type='email' defaultValue={patient.email} autoComplete='email' required className='block w-full rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6' />
 								</div>
 							</div>
 
