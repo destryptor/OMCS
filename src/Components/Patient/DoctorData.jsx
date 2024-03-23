@@ -19,6 +19,10 @@ function DoctorData({ location }) {
 	}
 
 	useEffect(() => {
+		if (!getJwtToken()) {
+			toast.error('Session expired. Please login again');
+			return window.location.href('/patient-login');
+		}
 		const fetchData = async () => {
 			try {
 				const doctorResponse = await fetch('http://localhost:6969/doctor/getByLocation', {

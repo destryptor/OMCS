@@ -108,6 +108,42 @@ const completionMail = (to, from, receiver_name, sender_name) => {
 	});
 };
 
+const feedbackMail = (to, receiver_name, sender_name) => {
+	const mailOptions = {
+		from: process.env.EMAIL,
+		to: to,
+		subject: 'You have received a feedback!',
+		text: `Hello Dr. ${receiver_name},\n You have received a feedback from your patient ${sender_name}. Please click the feedback button in the 'COMPLETED CONSULTATIONS' section to view the feedback.\n\n Regards,\nOMCS`,
+		html: `<p>Hello Dr. ${receiver_name},</p><p>You have received a feedback from your patient ${sender_name}. Please click the feedback button in the 'COMPLETED CONSULTATIONS' section to view the feedback.</p><br><p>Regards,</p><p>OMCS</p>`,
+	};
+
+	transporter.sendMail(mailOptions, (error, info) => {
+		if (error) {
+			console.error(error);
+		} else {
+			console.log('Email sent: ' + info.response);
+		}
+	});
+};
+
+const replyMail = (to, receiver_name, sender_name) => {
+	const mailOptions = {
+		from: process.env.EMAIL,
+		to: to,
+		subject: 'You have received a reply!',
+		text: `Hello ${receiver_name},\n You have received a reply from Dr. ${sender_name}. Please click the feedback button in the 'COMPLETED CONSULTATIONS' section to view the reply.\n\n Regards,\nOMCS`,
+		html: `<p>Hello ${receiver_name},</p><p>You have received a reply from Dr. ${sender_name}. Please click the reply button in the 'COMPLETED CONSULTATIONS' section to view the reply.</p><br><p>Regards,</p><p>OMCS</p>`,
+	};
+
+	transporter.sendMail(mailOptions, (error, info) => {
+		if (error) {
+			console.error(error);
+		} else {
+			console.log('Email sent: ' + info.response);
+		}
+	});
+};
+
 emailRouter.post('/sendMail', authenticateToken, async (req, res) => {
 	try {
 		const { to, from, context, receiver_name, sender_name, clinic, location, date, time, reason, prescription } = req.body;
@@ -123,6 +159,12 @@ emailRouter.post('/sendMail', authenticateToken, async (req, res) => {
 		}
 		if (context === 'completion') {
 			completionMail(to, from, receiver_name, sender_name);
+		}
+		if (context === 'feedback') {
+			feedbackMail(to, receiver_name, sender_name);
+		}
+		if (context === 'reply') {
+			replyMail(to, receiver_name, sender_name);
 		}
 		return res.status(200).json({ message: 'Mail sent' });
 	} catch (error) {

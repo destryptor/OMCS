@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import Booked from './BookedConsultations/BookedAppointments';
 import PendingConsulations from './PendingConsultations/PendingConsultations';

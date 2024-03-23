@@ -89,10 +89,6 @@ function UpdateProfile() {
 				const _id = doctor._id;
 				const name = document.getElementById('name').value;
 				if (name === '') return toast.error('Name cannot be empty');
-				const email = document.getElementById('email').value;
-				if (email === '') return toast.error('Email cannot be empty');
-				const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-				if (!emailRegex.test(email)) return toast.error('Please enter a valid email address');
 				const specialisation = document.getElementById('specialisation').value;
 				if (specialisation === '') return toast.error('Specialisation cannot be empty');
 				const certification = document.getElementById('certification').value;
@@ -198,9 +194,11 @@ function UpdateProfile() {
 			} else {
 				const _id = patient._id;
 				const name = document.getElementById('name').value;
-				const email = document.getElementById('email').value;
+				if (name === '') return toast.error('Name cannot be empty');
 				const age = document.getElementById('age').value;
+				if (age === '') return toast.error('Age cannot be empty');
 				const location = document.getElementById('countries').value;
+				if (location === 'Choose a location') return toast.error('Please select a location');
 
 				const updatedPatient = {
 					_id,

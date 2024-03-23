@@ -22,6 +22,11 @@ function PendingData({ status }) {
 	const jwtToken = getJwtToken();
 
 	useEffect(() => {
+		if (!jwtToken) {
+			toast.error('Session expired. Please login again');
+			return window.location.href('/doctor-login');
+		}
+
 		const fetchData = async () => {
 			try {
 				const doctorResponse = await fetch('http://localhost:6969/doctor/getByEmail', {
@@ -130,6 +135,7 @@ function PendingData({ status }) {
 							if (doctor.email === doctorEmail && doctor.status === 'appointment') {
 								return doctor.symptoms;
 							}
+							return null;
 						});
 						const tempData = {
 							name: patientData.name,
@@ -153,6 +159,7 @@ function PendingData({ status }) {
 		};
 		fetchData();
 		setLoading(false);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	return (
 		<>

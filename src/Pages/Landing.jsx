@@ -36,7 +36,7 @@ const Landing = () => {
 						<div class='max-w-lg px-4 sm:pt-24 pt-12 sm:pb-8 mx-auto text-left md:max-w-none md:text-center'>
 							<h1 class='font-extrabold  tracking-tight text-left text-[#201515] text-center sm:leading-none text-6xl sm:text-9xl'>
 								<span class='inline md:block '>Online Medical </span>
-								<span class='relative mt-2 bg-clip-text text-[#201515] md:inline-block'>Consulting System.</span>
+								<span class='relative mt-2 bg-clip-text text-[#201515] md:inline-block'>Consulting System</span>
 							</h1>
 						</div>
 
@@ -63,7 +63,7 @@ const Landing = () => {
 										<div class='relative items-center gap-12 m-auto lg:inline-flex md:order-first'>
 											<div class='max-w-xl text-center lg:text-left'>
 												<div>
-													<p class='text-3xl font-semibold tracking-tight text-[#201515] sm:text-5xl'>Medial Consulting System</p>
+													<p class='text-3xl font-semibold tracking-tight text-[#201515] sm:text-5xl'>Online Medical Consulting System</p>
 													<p class='max-w-xl mt-4 text-base tracking-tight text-gray-600'>We provide a platform for patients to consult with doctors online. The system is designed to make it easy and convenient for patients to consult with doctors from the comfort of their homes.</p>
 												</div>
 											</div>

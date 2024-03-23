@@ -24,7 +24,8 @@ function CompletedConsultations() {
 
 	useEffect(() => {
 		if (!jwtToken) {
-			return toast.error('Session expired. Please login again.');
+			toast.error('Session expired. Please login again.');
+			return window.location.href('/patient-login');
 		}
 		const fetchCompleted = async () => {
 			try {
@@ -63,9 +64,11 @@ function CompletedConsultations() {
 									sr: prevData.length + 1,
 									name: doctorData.name,
 									email: doc.email,
+									id: doc.id,
 									specialisation: doctorData.specialisation,
 									clinic: doctorData.clinic,
 									location: doctorData.location,
+									symptoms: doc.symptoms,
 									feedback: doc.feedback,
 								},
 							]);
@@ -111,6 +114,9 @@ function CompletedConsultations() {
 															Specialisation
 														</th>
 														<th scope='col' class='px-6 py-4'>
+															Symptoms
+														</th>
+														<th scope='col' class='px-6 py-4'>
 															Clinic
 														</th>
 														<th scope='col' class='px-6 py-4'>
@@ -123,7 +129,7 @@ function CompletedConsultations() {
 												</thead>
 												<tbody>
 													{Data.map((data, index) => (
-														<TableCard key={index} sr={data.sr} name={data.name} email={data.email} specialisation={data.specialisation} clinic={data.clinic} location={data.location} feedback={data.feedback} />
+														<TableCard key={index} sr={data.sr} name={data.name} email={data.email} specialisation={data.specialisation} clinic={data.clinic} location={data.location} symptoms={data.symptoms} feedback={data.feedback} id={data.id} />
 													))}
 												</tbody>
 											</table>
