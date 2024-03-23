@@ -20,6 +20,10 @@ export default function PendingCard({ index, data, status }) {
 
 	const authFetch = async (url, options = {}) => {
 		const token = getJwtToken();
+		if (!token) {
+			toast.error('Session expired. Please login again');
+			return (window.location.href = '/doctor-login');
+		}
 
 		const headers = {
 			'Content-Type': 'application/json',
@@ -698,6 +702,7 @@ export default function PendingCard({ index, data, status }) {
 							}
 						}
 					}
+					return null;
 				});
 				if (flag === 1) return;
 				console.log(flag);
@@ -856,7 +861,7 @@ export default function PendingCard({ index, data, status }) {
 		}
 		const patientEmail = data.email;
 		const feedback = document.getElementById('reply-text').value;
-		if (feedback === '') return toast.error('Feedback cannot be empty');
+		if (feedback === '') return toast.error('Reply cannot be empty');
 		try {
 			const response = await authFetch('http://localhost:6969/patient/getByEmail', {
 				method: 'POST',
@@ -880,6 +885,30 @@ export default function PendingCard({ index, data, status }) {
 				throw new Error('Doctor not found for the patient in appointment list');
 			}
 			patient_to_upd.doctor[doct_ind].feedback = feedback;
+			let doctorData;
+
+			try {
+				const doctorResponse = await authFetch('http://localhost:6969/doctor/getByEmail', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ email: localStorage.getItem('userEmail') }),
+				});
+				if (doctorResponse.ok) {
+					console.log('Doctor obtained successfully:', doctorResponse);
+					doctorData = await doctorResponse.json();
+				} else {
+					const errorMessage = await doctorResponse.text();
+					console.error('Error obtaining doctor:', errorMessage);
+					toast.error('Internal server error');
+					return;
+				}
+			} catch (error) {
+				console.error(error);
+				toast.error('Internal server error');
+				return;
+			}
 
 			try {
 				const updateResponse = await authFetch('http://localhost:6969/patient/updatePatient', {
@@ -894,6 +923,30 @@ export default function PendingCard({ index, data, status }) {
 					const updatedPatient = await updateResponse.json();
 					console.log('Patient updated successfully:', updatedPatient);
 					toast.success('Reply sent successfully');
+					try {
+						const emailResponse = await authFetch('http://localhost:6969/email/sendMail', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify({
+								to: patientEmail,
+								from: localStorage.getItem('userEmail'),
+								context: 'reply',
+								receiver_name: patient_to_upd.name,
+								sender_name: doctorData.name,
+								feedback: feedback,
+							}),
+						});
+
+						if (emailResponse.ok) {
+							console.log('Email sent successfully:', emailResponse);
+						}
+					} catch (error) {
+						console.error(error);
+						toast.error('Internal server error');
+						return;
+					}
 					setTimeout(() => {
 						handleCloseModal();
 						setInputValue('');
@@ -949,14 +1002,14 @@ export default function PendingCard({ index, data, status }) {
 											<div className='text-md font-bold text-left'>
 												Age - <span className='text-gray-600 font-semibold text-sm '>{data.age}</span>
 											</div>
-											<div className='text-md font-bold md:text-left'>
+											<div className='text-md font-bold text-left'>
 												Symptoms - <span className='text-gray-600 font-semibold text-sm'>{data.symptoms}</span>
 											</div>
 										</div>
 										{isReject && (
 											<>
 												<div className='mt-2'>
-													<div className='text-md font-bold md:text-left'>State your reasons for rejection:</div>
+													<div className='text-md font-bold text-left'>State your reasons for rejection:</div>
 													<textarea type='text' value={reject_reason} onChange={handlerejectreason} className='min-h-20 w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' placeholder='Reasons for rejection' />
 												</div>
 												<div className='flex justify-center bg-gray-50 px-4 py-3 sm:px-6'>
@@ -969,7 +1022,7 @@ export default function PendingCard({ index, data, status }) {
 										{isPrescript && (
 											<>
 												<div className='mt-2'>
-													<div className='text-md font-bold md:text-left'>Prescription-</div>
+													<div className='text-md font-bold text-left'>Prescription-</div>
 													<textarea type='text' value={inputValue} onChange={handleInputChange} className='min-h-20 w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' placeholder='Prescibe the medicines here' />
 												</div>
 												<div className='flex justify-center bg-gray-50 px-4 py-3 sm:px-6'>
@@ -982,10 +1035,10 @@ export default function PendingCard({ index, data, status }) {
 										{isFeedback && (
 											<>
 												<div className='mt-2'>
-													<div className='text-md font-bold md:text-left mb-2'>
+													<div className='text-md font-bold text-left mb-2'>
 														Feedback from patient- <span className='text-gray-600 font-semibold text-sm '>{data.feedback}</span>
 													</div>
-													<div className='text-md font-bold md:text-left'>Reply:</div>
+													<div className='text-md font-bold text-left'>Reply:</div>
 													<textarea type='text' id='reply-text' className='min-h-20 w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' placeholder='Your Reply' />
 												</div>
 												<div className='flex justify-center bg-gray-50 px-4 py-3 sm:px-6'>
@@ -998,9 +1051,9 @@ export default function PendingCard({ index, data, status }) {
 										{!isPrescript && !isReject && !isFeedback && (
 											<>
 												<div className='mt-2'>
-													<div className='text-md font-bold md:text-left'>Appointment date</div>
+													<div className='text-md font-bold text-left'>Appointment date</div>
 													<input id='date' type='date' className=' w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' />
-													<div className='text-md font-bold md:text-left'>Appointment time</div>
+													<div className='text-md font-bold text-left'>Appointment time</div>
 													<input id='time' type='time' className=' w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' />
 												</div>
 												<div className='flex justify-center bg-gray-50 px-4 py-3 sm:px-6'>
@@ -1023,7 +1076,7 @@ export default function PendingCard({ index, data, status }) {
 						<h4 className='text-lg font-bold text-left mx-2'>{data.name}</h4>
 						<div className='flex'>
 							<div className='mx-2'>
-								<div className='text-md font-bold md:text-left'>
+								<div className='text-md font-bold text-left'>
 									Age - <span className='text-gray-600 font-semibold text-sm'>{data.age}</span>
 								</div>
 								<div className='text-md font-bold text-left'>

@@ -8,7 +8,6 @@ import toast, { Toaster } from 'react-hot-toast';
 const DoctorDashBoard = () => {
 	const navigator = useNavigate();
 
-	const email = localStorage.getItem('userEmail');
 	const isDoctor = localStorage.getItem('isDoctor');
 	function getJwtToken() {
 		const cookies = document.cookie.split(';').map((cookie) => cookie.trim());
@@ -34,12 +33,14 @@ const DoctorDashBoard = () => {
 				return navigator('/doctor-login');
 			}, 1500);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
 		<div>
+			<Toaster />
 			<div className='flex relative'>
-				<div className='flex flex-col justify-center w-full md:w-[calc(100%-24rem)]'>
+				<div className='flex flex-col justify-center w-full md:w-[calc(100%-32rem)]'>
 					<h2 class='pt-24 m-auto font-bold my-2 uppercase text-xl'>Pending Consultations</h2>
 					<PendingData status='consultation' />
 

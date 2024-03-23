@@ -24,7 +24,8 @@ function BookedAppointments() {
 
 	useEffect(() => {
 		if (!jwtToken) {
-			return toast.error('Session expired. Please login again.');
+			toast.error('Session expired. Please login again.');
+			return window.location.href('/patient-login');
 		}
 		const fetchAppointments = async () => {
 			try {

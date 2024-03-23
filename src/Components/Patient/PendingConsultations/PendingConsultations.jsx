@@ -23,6 +23,10 @@ function PendingData() {
 	const jwtToken = getJwtToken();
 
 	useEffect(() => {
+		if (!jwtToken) {
+			toast.error('Session expired. Please login again');
+			return window.location.href('/patient-login');
+		}
 		const fetchPatient = async () => {
 			try {
 				const response = await fetch('http://localhost:6969/patient/getByEmail', {

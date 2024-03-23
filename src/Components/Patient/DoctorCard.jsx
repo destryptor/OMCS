@@ -20,6 +20,10 @@ export default function DoctorCard(props) {
 
 	const authFetch = async (url, options = {}) => {
 		const token = getJwtToken();
+		if (!token) {
+			toast.error('Session expired. Please login again');
+			return window.location.href('/patient-login');
+		}
 
 		const headers = {
 			'Content-Type': 'application/json',
@@ -79,6 +83,7 @@ export default function DoctorCard(props) {
 						}
 					}
 				}
+				return null;
 			});
 
 			if (!dupFlag) {
@@ -143,6 +148,7 @@ export default function DoctorCard(props) {
 							}
 						}
 					}
+					return null;
 				});
 
 				if (!dupFlag2) {

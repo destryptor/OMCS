@@ -113,9 +113,9 @@ const PatientDashBoard = () => {
 				<div className='flex relative px-10'>
 					{/*Map */}
 					<div className='flex flex-col justify-center w-full md:w-[calc(100%-24rem)]'>
-						<div className='pt-24 m-auto pb-1 border-red-600 flex justify-around items-center md:w-[calc(100%-24rem)]'>
+						<div className='pt-24 m-auto pb-1 border-red-600 flex justify-around items-center md:w-[calc(100%-10rem)]'>
 							{window.location.pathname !== '/patient-dashboard/pending' && (
-								<select id='countries' className='block m-2 md:min-w-48 rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 h-8' onChange={handleLocationChange} value={location}>
+								<select id='countries' className='block m-2 md:min-w-0 rounded-md p-2 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 h-8' onChange={handleLocationChange} value={location}>
 									<option value={loc}>{loc} ( Current location )</option>
 									<option value='Jaipur'>Jaipur</option>
 									<option value='Delhi'>Delhi</option>
@@ -134,7 +134,7 @@ const PatientDashBoard = () => {
 							)}
 						</div>
 						{/* Needs styling... */}
-						<h2 className='m-auto font-bold my-2 text-xl uppercase'>{window.location.pathname === '/patient-dashboard/pending' ? 'Pending Consultations' : 'List of available doctors'}</h2>
+						<h2 className='m-auto font-bold my-2 text-xl uppercase'>{window.location.pathname === '/patient-dashboard/consultations' ? 'Pending Consultations' : 'List of available doctors'}</h2>
 
 						<Routes>
 							<Route path='/' element={<DoctorData location={location} />} />

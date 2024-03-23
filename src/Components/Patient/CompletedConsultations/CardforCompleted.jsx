@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function TableCard(data) {
@@ -30,6 +30,10 @@ export default function TableCard(data) {
 	const patientEmail = localStorage.getItem('userEmail');
 
 	const handleFeedbackSubmit = async () => {
+		if (!jwtToken) {
+			toast.error('Session expired. Please login again');
+			return window.location.href('/patient-login');
+		}
 		const feedback = document.getElementById('feedback-text').value;
 		if (feedback === '') {
 			toast.error('Feedback cannot be empty');
@@ -54,52 +58,97 @@ export default function TableCard(data) {
 			let bound = false;
 			let id;
 			patient.doctor.map((doctor) => {
-				if (bound) return;
+				if (bound) return null;
 				if (doctor.status === 'completed') {
 					if (doctor.email === doctorEmail) {
 						if (new Date(new Date(doctor.completionDate).getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] < new Date().toISOString().split('T')[0]) {
 							toast.error('Feedback can only be given within 7 days of consultation completion');
 							bound = true;
 							id = doctor.id;
-							setTimeout(() => {
+							setTimeout(async () => {
 								toast.error('Deleting completed consultation...');
+								const doctor_to_remove = patient.doctor.findIndex((doctor) => doctor.id === id);
+								if (doctor_to_remove === -1) {
+									throw new Error("Doctor not found in patient's doctor list");
+								}
+								patient.doctor.splice(doctor_to_remove, 1);
+
+								try {
+									const updatePatientResponse = await fetch('http://localhost:6969/patient/updatePatient', {
+										method: 'POST',
+										headers: {
+											'Content-Type': 'application/json',
+											Authorization: `Bearer ${jwtToken}`,
+										},
+										body: JSON.stringify(patient),
+									});
+									if (updatePatientResponse.status === 500) {
+										return toast.error('Internal server error');
+									} else {
+										const updatePatient = await updatePatientResponse.json();
+										if (updatePatient) {
+											console.log('Doctor removed: ', updatePatient);
+										}
+									}
+
+									try {
+										const doctorResponse = await fetch('http://localhost:6969/doctor/getByEmail', {
+											method: 'POST',
+											headers: {
+												'Content-Type': 'application/json',
+												Authorization: `Bearer ${jwtToken}`,
+											},
+											body: JSON.stringify({ email: doctorEmail }),
+										});
+										if (doctorResponse.status === 500) {
+											return toast.error('Internal server error');
+										}
+										const doctor = await doctorResponse.json();
+										const patient_to_remove = doctor.patients.findIndex((patient) => patient.id === data.id);
+
+										if (patient_to_remove === -1) {
+											throw new Error("Patient not found in doctor's patient list");
+										}
+										doctor.patients.splice(patient_to_remove, 1);
+
+										try {
+											const updateDoctorResponse = await fetch('http://localhost:6969/doctor/updateDoctor', {
+												method: 'POST',
+												headers: {
+													'Content-Type': 'application/json',
+													Authorization: `Bearer ${jwtToken}`,
+												},
+												body: JSON.stringify(doctor),
+											});
+											if (updateDoctorResponse.status === 500) {
+												return toast.error('Internal server error');
+											} else {
+												const updateDoctor = await updateDoctorResponse.json();
+												if (updateDoctor) {
+													console.log('Patient removed: ', updateDoctor);
+												}
+												windowReload();
+											}
+										} catch (error) {
+											console.error(error);
+										}
+									} catch (error) {
+										console.error(error);
+									}
+								} catch (error) {
+									console.error(error);
+								}
 							}, 2000);
 						} else {
 							doctor.feedback = feedback;
 						}
 					}
 				}
+				return null;
 			});
 
 			if (bound) {
-				const doctor_to_remove = patient.doctor.findIndex((doctor) => doctor.id === id);
-				if (doctor_to_remove === -1) {
-					throw new Error("Doctor not found in patient's doctor list");
-				}
-				patient.doctor.splice(doctor_to_remove, 1);
-
-				try {
-					const updatePatientResponse = await fetch('http://localhost:6969/patient/updatePatient', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${jwtToken}`,
-						},
-						body: JSON.stringify(patient),
-					});
-					if (updatePatientResponse.status === 500) {
-						return toast.error('Internal server error');
-					} else {
-						const updatePatient = await updatePatientResponse.json();
-						if (updatePatient) {
-							console.log('Doctor removed: ', updatePatient);
-						}
-					}
-				} catch (error) {
-					console.error(error);
-				}
-
-				return windowReload();
+				return;
 			}
 
 			try {
@@ -116,11 +165,10 @@ export default function TableCard(data) {
 				}
 				const doctor = await doctorResponse.json();
 				doctor.patients.map((patient) => {
-					if (patient.status === 'completed') {
-						if (patient.email === patientEmail) {
-							patient.feedback = feedback;
-						}
+					if (patient.id === data.id) {
+						patient.feedback = feedback;
 					}
+					return null;
 				});
 
 				try {
@@ -139,6 +187,32 @@ export default function TableCard(data) {
 						if (updateDoctor) {
 							console.log('Feedback submitted: ', updateDoctor);
 							toast.success('Feedback submitted successfully');
+							try {
+								const response = await fetch('http://localhost:6969/email/sendMail', {
+									method: 'POST',
+									headers: {
+										'Content-Type': 'application/json',
+										Authorization: `Bearer ${jwtToken}`,
+									},
+									body: JSON.stringify({
+										to: doctorEmail,
+										from: patientEmail,
+										context: 'feedback',
+										receiver_name: data.name,
+										sender_name: patient.name,
+									}),
+								});
+								if (response.status === 500) {
+									return toast.error('Internal server error');
+								} else {
+									const mail = await response.json();
+									if (mail) {
+										console.log('Mail sent: ', mail);
+									}
+								}
+							} catch (error) {
+								console.log(error);
+							}
 							setTimeout(() => {
 								setShowModal(false);
 								document.getElementById('feedback-text').value = '';
@@ -186,6 +260,9 @@ export default function TableCard(data) {
 											<div className='text-md font-bold text-left'>
 												Specialisation - <span className='text-gray-600 font-semibold text-sm '>{data.specialisation}</span>
 											</div>
+											<div className='text-md font-bold text-left'>
+												Symptoms - <span className='text-gray-600 font-semibold text-sm '>{data.symptoms}</span>
+											</div>
 											<div className='text-md font-bold md:text-left'>
 												Clinic - <span className='text-gray-600 font-semibold text-sm'>{data.clinic}</span>
 											</div>
@@ -221,6 +298,7 @@ export default function TableCard(data) {
 				<td class='whitespace-nowrap px-6 py-4 font-medium '>{data.sr}</td>
 				<td class='whitespace-nowrap px-6 py-4 font-normal'>{data.name}</td>
 				<td class='whitespace-nowrap px-6 py-4 font-normal'>{data.specialisation}</td>
+				<td class='whitespace-nowrap px-6 py-4 font-normal'>{data.symptoms}</td>
 				<td class='whitespace-nowrap px-6 py-4 font-normal'>{data.clinic}</td>
 				<td class='whitespace-nowrap px-6 py-4 font-normal'>{data.location}</td>
 				<td class='whitespace-nowrap px-6 py-4 font-normal'>
