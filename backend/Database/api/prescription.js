@@ -43,7 +43,7 @@ prescriptionRouter.post('/getPrescription', authenticateToken, async (req, res) 
 prescriptionRouter.post('/getPrescriptionsByPatient', authenticateToken, async (req, res) => {
 	try {
 		const { patient } = req.body;
-		const prescriptions = await Prescription.find({ patient });
+		const prescriptions = await Prescription.find({ patientEmail: patient });
 
 		if (prescriptions.length === 0) {
 			return res.status(404).json({ message: 'No prescriptions found' });
@@ -59,7 +59,7 @@ prescriptionRouter.post('/getPrescriptionsByPatient', authenticateToken, async (
 prescriptionRouter.post('/getPrescriptionsByDoctor', authenticateToken, async (req, res) => {
 	try {
 		const { doctor } = req.body;
-		const prescriptions = await Prescription.find({ doctor });
+		const prescriptions = await Prescription.find({ doctorEmail: doctor });
 
 		if (prescriptions.length === 0) {
 			return res.status(404).json({ message: 'No prescriptions found' });
