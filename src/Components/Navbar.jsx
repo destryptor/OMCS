@@ -47,7 +47,7 @@ const Navbar = () => {
 							<div className='flex flex-shrink-0 items-center'>
 								<div className='flex justify-center items-center'>
 									<img className='h-8 w-auto' src='./logo.png' alt='Your Company' />
-									<h1 className='m-2 text-white text-lg font-bold'>OMCS</h1>
+									<h1 className='m-2 text-white text-lg font-bold'>Jeevan</h1>
 								</div>
 							</div>
 							{/* Header to show hello user in center*/}
