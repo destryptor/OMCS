@@ -91,7 +91,6 @@ doctorRouter.post('/getByEmail', authenticateToken, async (req, res) => {
 doctorRouter.post('/createDoctor', async (req, res) => {
 	try {
 		const doctorData = req.body;
-		console.log(doctorData);
 		const doctor = await Doctor.findOne({ email: doctorData.email });
 		if (doctor) return res.status(400).send('Doctor already exists');
 

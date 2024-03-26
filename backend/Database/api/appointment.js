@@ -24,23 +24,6 @@ function authenticateToken(req, res, next) {
 	});
 }
 
-applicationRouter.post('/getAppointment', authenticateToken, async (req, res) => {
-	try {
-		const patientEmail = req.body.patientEmail;
-		const doctorEmail = req.body.doctorEmail;
-		const appointment = await Appointment.findOne({ patient: patientEmail, doctor: doctorEmail });
-
-		if (!appointment) {
-			return res.status(404).json({ message: 'Appointment not found' });
-		}
-
-		return res.status(200).json(appointment);
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({ message: 'Internal server error' });
-	}
-});
-
 applicationRouter.post('/getAppointmentsByPatient', authenticateToken, async (req, res) => {
 	try {
 		const { email } = req.body;
