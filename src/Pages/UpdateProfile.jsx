@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
 function UpdateProfile() {
+	// Component to update profile of doctor or patient, performs checks as to whether every field is filled or not, and some specific to doctors, as specified below
 	const navigator = useNavigate();
 	const [doctor, setDoctor] = useState({});
 	const [patient, setPatient] = useState({});
@@ -138,6 +139,7 @@ function UpdateProfile() {
 				let flag = false;
 
 				workingHours.forEach((workingHour) => {
+					// Checking if all working hours are filled
 					if (workingHour.from !== '' || workingHour.to !== '') {
 						if (workingHour.from === '' || workingHour.to === '') {
 							flag = true;
@@ -148,6 +150,7 @@ function UpdateProfile() {
 					const fromArr = workingHour.from.split(':');
 					const toArr = workingHour.to.split(':');
 
+					// Checking if from time is later than to time
 					if (parseInt(fromArr[0]) > parseInt(toArr[0])) {
 						flag = true;
 						return toast.error('From time cannot be later than To time for ' + workingHour.day);

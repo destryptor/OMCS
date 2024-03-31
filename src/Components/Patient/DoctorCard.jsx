@@ -62,6 +62,7 @@ export default function DoctorCard(props) {
 		let dupFlag = false;
 		try {
 			const patientResponse = await authFetch('http://localhost:6969/patient/getByEmail', {
+				// API endpoint to get patient by email
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -75,6 +76,7 @@ export default function DoctorCard(props) {
 			}
 			const patient = await patientResponse.json();
 			patient.doctor.map((doctor) => {
+				// Check if a previous consultation request already exists
 				if (!dupFlag) {
 					if (doctor.email === doctorEmail) {
 						if (doctor.status === 'consultation') {
@@ -88,6 +90,7 @@ export default function DoctorCard(props) {
 
 			if (!dupFlag) {
 				const patientDataToUpdate = {
+					// Update patient data with new consultation request
 					email: patientEmail,
 					$push: {
 						doctor: {
@@ -140,6 +143,7 @@ export default function DoctorCard(props) {
 				}
 				const doctor = await doctorResponse.json();
 				doctor.patients.map((patient) => {
+					// Check if a previous consultation request already exists
 					if (!dupFlag2) {
 						if (patient.email === patientEmail) {
 							if (patient.status === 'consultation') {
@@ -153,6 +157,7 @@ export default function DoctorCard(props) {
 
 				if (!dupFlag2) {
 					const doctorResponse2 = await authFetch('http://localhost:6969/doctor/updateDoctor', {
+						// Update doctor data with new consultation request
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',
@@ -186,7 +191,7 @@ export default function DoctorCard(props) {
 	return (
 		<>
 			<Toaster />
-			{showModal && (
+			{showModal && ( // Modal for consultation form
 				<div className='fixed inset-0 z-10 overflow-y-auto ' aria-labelledby='modal-title' role='dialog' aria-modal='true'>
 					<div className='flex flex-col items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
 						<div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity' aria-hidden='true'></div>
@@ -227,13 +232,14 @@ export default function DoctorCard(props) {
 							</div>
 							<div className='flex justify-center bg-gray-50 px-4 py-3 sm:px-6'>
 								<button className=' inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm' onClick={handlePrescriptionSubmit}>
-									Submit
+									Submit {/* Submit button  which calls a function to handle consultation request*/}
 								</button>
 							</div>
 						</div>
 					</div>
 				</div>
-			)}
+			)}{' '}
+			{/* Modal ends here */}
 			<div className='p-5 m-2 w-full border-solid border-2 border-green-600  rounded-lg shadow-md bg-stone-100 hover:scale-105 transition-all 	'>
 				<div className='flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row'>
 					<div className=''>

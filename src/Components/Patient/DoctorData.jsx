@@ -26,6 +26,7 @@ function DoctorData({ location }) {
 		const fetchData = async () => {
 			try {
 				const doctorResponse = await fetch('http://localhost:6969/doctor/getByLocation', {
+					// This API endpoint sends an array of doctors based on the location
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -89,7 +90,7 @@ function DoctorData({ location }) {
 
 		fetchData();
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [location]);
+	}, [location]); // Location as a dependency causes the component to re-render when the location changes
 	console.log(specialisations);
 	return (
 		<>
