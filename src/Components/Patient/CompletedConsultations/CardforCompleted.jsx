@@ -29,6 +29,7 @@ export default function TableCard(data) {
 	const jwtToken = getJwtToken();
 	const patientEmail = localStorage.getItem('userEmail');
 
+	// Function to handle feedback submission from patient's side
 	const handleFeedbackSubmit = async () => {
 		if (!jwtToken) {
 			toast.error('Session expired. Please login again');

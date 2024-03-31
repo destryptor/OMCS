@@ -104,6 +104,7 @@ export default function PendingCard({ index, data, status }) {
 		window.location.reload();
 	};
 
+	// Functon to handle the reject option. It will send an email to the patient with the reason for rejection
 	const handlerejectsubmit = async () => {
 		console.log(reject_reason);
 		const patientEmail = data.email;
@@ -232,6 +233,7 @@ export default function PendingCard({ index, data, status }) {
 		}
 	};
 
+	// Function to handle the completion of the consultation. It will send an email to the patient with the completion details
 	const handlecomplete = async () => {
 		const patientEmail = data.email;
 		const doctorEmail = localStorage.getItem('userEmail');
@@ -379,6 +381,7 @@ export default function PendingCard({ index, data, status }) {
 		}
 	};
 
+	// Function to handle the deletion of the completed appointment. It will remove the appointment from the patient and doctor's appointment list
 	const handledelete = async () => {
 		const patientEmail = data.email;
 		const doctorEmail = localStorage.getItem('userEmail');
@@ -406,6 +409,8 @@ export default function PendingCard({ index, data, status }) {
 			if (doct_ind === -1) {
 				throw new Error('Doctor not found for the patient in appointment list');
 			}
+
+			// Prevention of deletion of completed consultation within 7 days of completion
 			// const completeDate = patient_to_upd.doctor[doct_ind].completionDate;
 			// const currDate = new Date().toISOString().split('T')[0];
 			// const oneWeekAfter = new Date(new Date(completeDate).getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
@@ -485,6 +490,7 @@ export default function PendingCard({ index, data, status }) {
 		}
 	};
 
+	// Function to handle the prescription. It will send an email to the patient with the prescription details
 	const handle_online_prescription = async () => {
 		const patientEmail = data.email;
 		const doctorEmail = localStorage.getItem('userEmail');
@@ -641,6 +647,7 @@ export default function PendingCard({ index, data, status }) {
 		setInputValue(' ');
 	};
 
+	// Function to handle the appointment. It will send an email to the patient with the appointment details
 	const handleappointment = async () => {
 		const patientEmail = data.email;
 		const date = document.getElementById('date').value;
@@ -713,15 +720,13 @@ export default function PendingCard({ index, data, status }) {
 					doctor: {
 						email: doctorEmail,
 					},
-					date: date, //need to be changed by inputs
-					time: time, //need to be changed by inputs
+					date: date,
+					time: time,
 				};
 				const response = await authFetch('http://localhost:6969/appointment/createAppointment', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
-						// Include authentication token if required
-						// 'Authorization': 'Bearer <your_token_here>'
 					},
 					body: JSON.stringify(appointmentData),
 				});
@@ -732,7 +737,6 @@ export default function PendingCard({ index, data, status }) {
 
 				const apt_data = await response.json();
 				console.log('Appointment created successfully:', apt_data);
-				// Handle success
 
 				const pait_ind = doc_data_to_update.patients.findIndex((patient) => patient.email === patientEmail && patient.status === 'consultation');
 				if (pait_ind === -1) {
@@ -851,10 +855,10 @@ export default function PendingCard({ index, data, status }) {
 			}
 		} catch (error) {
 			console.error('Error creating appointment:', error.message);
-			// Handle error
 		}
 	};
 
+	// Function to handle the reply being sent by the doctor in lieu of the patient's feedback. It will send an email to the patient with the reply details
 	const handlereplysubmit = async () => {
 		if (new Date(new Date(data.completed).getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] < new Date().toISOString().split('T')[0]) {
 			return toast.error('7 days have passed since the completion of the appointment. Please click remove to delete the consultation');
