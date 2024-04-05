@@ -46,6 +46,8 @@ export default function PendingCard({ index, data, status }) {
 	const handleOpenModal = () => {
 		setShowModal(true);
 		setIsPrescript(true);
+		setIsReject(false);
+		setIsFeedback(false);
 	};
 
 	const handleRejctModal = () => {
@@ -66,6 +68,9 @@ export default function PendingCard({ index, data, status }) {
 	};
 
 	const handleOpenapppointModal = async () => {
+		setIsPrescript(false);
+		setIsReject(false);
+		setIsFeedback(false);
 		let flag = true;
 		const patientEmail = data.email;
 		const doctorEmail = localStorage.getItem('userEmail');
@@ -1027,7 +1032,7 @@ export default function PendingCard({ index, data, status }) {
 											<>
 												<div className='mt-2'>
 													<div className='text-md font-bold text-left'>Prescription-</div>
-													<textarea type='text' value={inputValue} onChange={handleInputChange} className='min-h-20 w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' placeholder='Prescibe the medicines here' />
+													<textarea type='text' value={inputValue} onChange={handleInputChange} className='min-h-20 w-full px-3 py-2 placeholder-gray-500 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm' placeholder='Prescribe the medicines here' />
 												</div>
 												<div className='flex justify-center bg-gray-50 px-4 py-3 sm:px-6'>
 													<button className=' inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm' onClick={handle_online_prescription}>
