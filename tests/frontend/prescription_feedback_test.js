@@ -75,7 +75,7 @@ async function doctorSignUpAndLogin(driver) {
 }
 
 async function sendPrescription(driver) {
-	console.log('--- Testing Appointment Booking ---');
+	console.log('--- Testing Prescription Sending ---');
 	try {
 		// Test: Verify presence of "Online Prescription" button
 		await driver.wait(until.elementLocated(By.xpath("//button[contains(text(), 'Online Prescription')]")), 10000);
@@ -100,7 +100,7 @@ async function sendPrescription(driver) {
 		console.log('Submit button clicked.');
 
 		await driver.wait(until.stalenessOf(prescriptionForm), 10000);
-		console.log('\nAppointment Booking submitted successfully.\n');
+		console.log('\nOnline Prescription sent successfully.\n');
 	} catch (error) {
 		console.error('An error occurred during Doctor Dashboard test:', error);
 	}
