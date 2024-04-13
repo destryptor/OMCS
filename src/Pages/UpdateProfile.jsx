@@ -338,6 +338,17 @@ function UpdateProfile() {
 										<option value='Delhi'>Delhi</option>
 										<option value='Bangalore'>Bangalore</option>
 										<option value='Kharagpur'>Kharagpur</option>
+										<option value='Mumbai'>Mumbai</option>
+										<option value='Chennai'>Chennai</option>
+										<option value='Kolkata'>Kolkata</option>
+										<option value='Hyderabad'>Hyderabad</option>
+										<option value='Pune'>Pune</option>
+										<option value='Ahmedabad'>Ahmedabad</option>
+										<option value='Surat'>Srinagar</option>
+										<option value='Kanpur'>Kanpur</option>
+										<option value='Nagpur'>Nagpur</option>
+										<option value='Lucknow'>Lucknow</option>
+										<option value='Bhopal'>Bhopal</option>
 									</select>
 								</div>
 							</div>
