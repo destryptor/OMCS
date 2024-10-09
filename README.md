@@ -1,4 +1,4 @@
-# The Online Medical Consultatation System
+# The Online Medical Consultation System
 
 The OMCS is an online service that allows patients and doctors to effectively communicate with each other from the comfort of their homes. It provides necessary facilities of consultation booking, physical appointment booking, providing online prescriptions, and a two-way feedback system.
 
@@ -27,7 +27,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 ## Dependencies
 
-Some of the important dependencies used in this project are:\
+Some of the important dependencies used in this project are:
 1) `express (v4.19.1)`: A Node.js web application framework that provides a set of features for building web applications. Mainly used for the backend.
 2) `mongoose (v8.2.1)`: An Object Data Modelling (ODM) tool for MongoDB and Node.js.
 3) `react (v18.2.0)`: A frontend library for building user interfaces. It is declarative, component-based, and efficient. React makes it easy to create interactive UIs by using a declarative approach to programming.
