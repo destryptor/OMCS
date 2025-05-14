@@ -46,6 +46,7 @@ JWT_SECRET = # use the jwt_secret_gen.js file in the backend directory of the fo
 EMAIL = omcs.seproject@gmail.com
 APP_PASSWORD = # contact us to fill this field
 ```
+Pneumonokoniosis
 
 ## Features of the application
 ### For patients
